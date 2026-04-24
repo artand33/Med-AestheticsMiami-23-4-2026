@@ -11,6 +11,7 @@ import { CheckCircle2 } from "lucide-react";
 
 type BookingOpenOptions = {
   treatmentName?: string;
+  locationId?: string;
 };
 
 type Ctx = { open: (options?: BookingOpenOptions) => void };
@@ -112,13 +113,16 @@ export function BookingProvider({ children }: { children: ReactNode }) {
         open: (options?: BookingOpenOptions) => {
           reset();
           setTreatmentName(options?.treatmentName ?? "");
+          if (options?.locationId && locations.some((item) => item.id === options.locationId)) {
+            setLocation(options.locationId);
+          }
           setIsOpen(true);
         },
       }}
     >
       {children}
       <Dialog open={isOpen} onOpenChange={(v) => { setIsOpen(v); if (!v) reset(); }}>
-        <DialogContent className="my-8 max-h-[85vh] overflow-y-auto rounded-2xl bg-[#F9F9F7] shadow-xl sm:max-w-2xl [&>button]:opacity-100 [&>button]:text-[#0F0F0F]/70">
+        <DialogContent className="my-8 max-h-[85vh] overflow-y-auto rounded-2xl bg-ivory shadow-xl sm:max-w-2xl [&>button]:opacity-100 [&>button]:text-ink/70">
           {!submitted ? (
             <>
               <DialogHeader className="pr-10">
@@ -127,7 +131,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                   Share a few details and our team will reach out within one business day to design your roadmap.
                 </DialogDescription>
               </DialogHeader>
-              <div className="mt-2 rounded-lg border border-[#C5A059]/25 bg-[#C5A059]/10 px-4 py-2 text-sm text-[#0F0F0F]/75">
+              <div className="mt-2 rounded-lg border border-gold/25 bg-gold/10 px-4 py-2 text-sm text-ink/75">
                 Step {step} of {totalSteps} — {stepTitles[step - 1]}
               </div>
               <form onSubmit={onSubmit} className="space-y-4 mt-2">
@@ -146,13 +150,13 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                             onClick={() => setLocation(item.id)}
                             className={`rounded-xl border p-4 text-left transition-colors ${
                               isSelected
-                                ? "border-[#C5A059] bg-[#C5A059]/12"
-                                : "border-stone-200 bg-white hover:border-[#C5A059]/50"
+                                ? "border-gold bg-gold/12"
+                                : "border-stone-200 bg-white hover:border-gold/50"
                             }`}
                           >
-                            <p className="font-medium text-[#0F0F0F]">{item.name.replace(" - ", " — ")}</p>
-                            <p className="mt-1 text-xs text-[#0F0F0F]/70">{item.address}</p>
-                            <p className="mt-1 text-xs text-[#0F0F0F]/70">{item.phone}</p>
+                            <p className="font-medium text-ink">{item.name.replace(" - ", " — ")}</p>
+                            <p className="mt-1 text-xs text-ink/70">{item.address}</p>
+                            <p className="mt-1 text-xs text-ink/70">{item.phone}</p>
                           </button>
                         );
                       })}

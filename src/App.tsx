@@ -20,10 +20,10 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <BookingProvider>
-          <div className="min-h-screen bg-[#F9F9F7] text-[#0F0F0F]">
+          <div className="min-h-screen bg-ivory text-ink">
             <a
               href="#main-content"
-              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-[#0F0F0F] focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-[#F9F9F7] focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#C5A059]"
+              className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-ivory focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-gold"
             >
               Skip to content
             </a>

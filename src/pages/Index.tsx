@@ -5,59 +5,9 @@ import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useReveal } from "@/hooks/useReveal";
 import { locations } from "@/lib/locations";
+import { SERVICES, type ServiceCategory } from "@/lib/services";
 import { ShieldCheck, Sparkles, HeartHandshake, MapPin, Phone } from "lucide-react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-
-const SERVICES = [
-  {
-    slug: "morpheus8-rf",
-    tag: "Face / Neck / Body",
-    title: "Skin Remodeling",
-    treatments: ["Morpheus8 RF", "Microneedling", "Fraxel resurfacing"],
-    startingPrice: "$XXX",
-    img: "https://placehold.co/400x300/f5f0e8/c5a059?text=Skin%20Remodeling",
-  },
-  {
-    slug: "venus-bliss-max",
-    tag: "Body / Sculpting",
-    title: "Body Contouring",
-    treatments: ["Venus Bliss MAX", "Quantum RF", "Lymphatic sculpt support"],
-    startingPrice: "$XXX",
-    img: "https://placehold.co/400x300/f5f0e8/c5a059?text=Body%20Contouring",
-  },
-  {
-    slug: "dermal-fillers",
-    tag: "Injectables",
-    title: "Injectables & Facial Artistry",
-    treatments: ["Neuromodulators", "Dermal fillers", "Biostimulator artistry"],
-    startingPrice: "$XXX",
-    img: "https://placehold.co/400x300/f5f0e8/c5a059?text=Injectables%20%26%20Facial%20Artistry",
-  },
-  {
-    slug: "aerolase-neo",
-    tag: "Skin Health",
-    title: "Laser Treatments",
-    treatments: ["Aerolase Neo", "IPL photofacial", "Laser hair removal"],
-    startingPrice: "$XXX",
-    img: "https://placehold.co/400x300/f5f0e8/c5a059?text=Laser%20Treatments",
-  },
-  {
-    slug: "iv-hydration-therapy",
-    tag: "Wellness",
-    title: "Wellness & IV Therapy",
-    treatments: ["IV hydration drips", "Vitamin infusions", "Recovery boosters"],
-    startingPrice: "$XXX",
-    img: "https://placehold.co/400x300/f5f0e8/c5a059?text=Wellness%20%26%20IV%20Therapy",
-  },
-  {
-    slug: "hydrafacial",
-    tag: "Skin Essentials",
-    title: "Core Skincare",
-    treatments: ["HydraFacial", "Chemical peels", "Clinical facials"],
-    startingPrice: "$XXX",
-    img: "https://placehold.co/400x300/f5f0e8/c5a059?text=Core%20Skincare",
-  },
-];
 
 const PILLARS = [
   { icon: ShieldCheck, title: "Medical Integrity", desc: "Led by our board-certified medical director with a focus on safety and anatomical precision." },
@@ -219,21 +169,21 @@ function Hero() {
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-        className="container relative z-10 py-32 md:py-36 max-w-3xl text-[#F9F9F7]"
+        className="container relative z-10 py-32 md:py-36 max-w-3xl text-ivory"
       >
-        <div className="h-px w-16 bg-[#C5A059] mb-8" />
-        <p className="uppercase tracking-[0.35em] text-xs text-[#C5A059] mb-6">Miami · 3 Locations</p>
+        <div className="h-px w-16 bg-gold mb-8" />
+        <p className="uppercase tracking-[0.35em] text-xs text-gold mb-6">Miami · 3 Locations</p>
         {/* Headline option 1: Smoother Skin, Firmer Contours, Confidence You Can See */}
         {/* Headline option 2: Lift, Smooth, and Sculpt With Natural-Looking Results */}
         {/* Headline option 3: Reveal Clearer Skin and More Defined Contours */}
         <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl leading-[1.03] mb-6">
           Smoother Skin, Firmer Contours, Confidence You Can See
         </h1>
-        <p className="text-lg md:text-xl text-[#F9F9F7]/85 max-w-xl mb-10 font-light">
+        <p className="text-lg md:text-xl text-ivory/85 max-w-xl mb-10 font-light">
           Personalized aesthetic plans for visible, natural results across 3 Miami locations, with 4.9★ from 340+ patients.
         </p>
         <div>
-          <BookButton className="h-12 px-8 text-base text-[#0F0F0F]">
+          <BookButton className="h-12 px-8 text-base text-ink">
             Book Free Consultation
           </BookButton>
         </div>
@@ -246,7 +196,7 @@ function TrustSignals() {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="w-full bg-ivory border-y border-[#C5A059]/20 py-12 md:py-14">
+    <section className="w-full bg-ivory border-y border-gold/20 py-12 md:py-14">
       <motion.div
         initial={shouldReduceMotion ? false : { opacity: 0 }}
         whileInView={shouldReduceMotion ? undefined : { opacity: 1 }}
@@ -257,8 +207,8 @@ function TrustSignals() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-6">
           {TRUST_STATS.map((stat) => (
             <div key={stat.label} className="text-center">
-              <p className="font-serif text-4xl md:text-5xl text-[#C5A059]">{stat.value}</p>
-              <p className="mt-2 text-sm md:text-base font-light text-[#0F0F0F]/60">{stat.label}</p>
+              <p className="font-serif text-4xl md:text-5xl text-gold">{stat.value}</p>
+              <p className="mt-2 text-sm md:text-base font-light text-ink/60">{stat.label}</p>
             </div>
           ))}
         </div>
@@ -267,7 +217,7 @@ function TrustSignals() {
           {MEDICAL_AFFILIATIONS.map((item) => (
             <span
               key={item}
-              className="rounded-full border border-[#C5A059]/45 bg-[#FFFFFF]/65 px-4 py-2 text-[10px] uppercase tracking-[0.2em] text-[#0F0F0F]/70"
+              className="rounded-full border border-gold/45 bg-white/65 px-4 py-2 text-[10px] uppercase tracking-[0.2em] text-ink/70"
             >
               {item}
             </span>
@@ -296,8 +246,8 @@ function SectionTitle({
   eyebrow,
   title,
   intro,
-  titleClassName = "text-[#0F0F0F]",
-  introClassName = "text-[#0F0F0F]/70",
+  titleClassName = "text-ink",
+  introClassName = "text-ink/70",
 }: {
   eyebrow: string;
   title: string;
@@ -315,9 +265,9 @@ function SectionTitle({
       className={`reveal-item max-w-2xl mb-10 md:mb-12 ${isVisible ? "is-visible" : ""}`}
       style={prefersReducedMotion ? undefined : { transitionDelay: "40ms" }}
     >
-      <div className="h-px w-14 bg-[#C5A059] mb-6" />
+      <div className="h-px w-14 bg-gold mb-6" />
       <div className="mb-4 inline-block bg-[radial-gradient(circle_at_center,hsl(var(--primary)/0.08),transparent_70%)] px-8 py-2">
-        <p className="uppercase tracking-[0.32em] text-xs text-[#C5A059]">{eyebrow}</p>
+        <p className="uppercase tracking-[0.32em] text-xs text-gold">{eyebrow}</p>
       </div>
       <h2 className={`font-serif text-3xl md:text-5xl leading-tight mb-4 ${titleClassName}`}>{title}</h2>
       {intro && <p className={`text-lg font-light ${introClassName}`}>{intro}</p>}
@@ -325,7 +275,7 @@ function SectionTitle({
   );
 }
 
-function TreatmentCard({ service, index }: { service: (typeof SERVICES)[number]; index: number }) {
+function TreatmentCard({ service, index }: { service: ServiceCategory; index: number }) {
   const { elementRef, isVisible, prefersReducedMotion } = useReveal<HTMLElement>({
     threshold: 0.18,
   });
@@ -341,26 +291,26 @@ function TreatmentCard({ service, index }: { service: (typeof SERVICES)[number];
           src={service.img}
           alt={`${service.title} category`}
           loading="lazy"
-          className="h-12 w-12 rounded-xl object-cover ring-1 ring-[#C5A059]/35"
+          className="h-12 w-12 rounded-xl object-cover ring-1 ring-gold/35"
         />
-        <span className="inline-block rounded-full text-[10px] uppercase tracking-[0.25em] text-[#C5A059] border border-[#C5A059]/40 px-3 py-1">
+        <span className="inline-block rounded-full text-[10px] uppercase tracking-[0.25em] text-gold border border-gold/40 px-3 py-1">
           {service.tag}
         </span>
       </div>
       <h3 className="font-serif text-2xl mb-3">{service.title}</h3>
       <ul className="mb-4 space-y-1.5">
         {service.treatments.map((treatment) => (
-          <li key={treatment} className="flex items-start gap-2 text-sm text-[#0F0F0F]/72 font-light">
-            <span className="mt-2 h-px w-2 bg-[#C5A059] flex-shrink-0" />
+          <li key={treatment} className="flex items-start gap-2 text-sm text-ink/72 font-light">
+            <span className="mt-2 h-px w-2 bg-gold flex-shrink-0" />
             <span>{treatment}</span>
           </li>
         ))}
       </ul>
-      <p className="mb-3 text-sm text-[#0F0F0F]/70">
-        <span className="text-[#0F0F0F]/55">Starting from </span>
-        <span className="font-medium text-[#C5A059]">{service.startingPrice}</span>
+      <p className="mb-3 text-sm text-ink/70">
+        <span className="text-ink/55">Starting from </span>
+        <span className="font-medium text-gold">{service.startingPrice}</span>
       </p>
-      <a href="#contact" className="text-sm text-[#0F0F0F]/60 transition-colors hover:text-[#C5A059]">
+      <a href="#contact" className="text-sm text-ink/60 transition-colors hover:text-gold">
         Learn more →
       </a>
     </article>
@@ -369,7 +319,7 @@ function TreatmentCard({ service, index }: { service: (typeof SERVICES)[number];
 
 function Services() {
   return (
-    <section id="treatments" className="py-20 md:py-24 bg-cream texture-grain border-y border-[#C5A059]/20">
+    <section id="treatments" className="py-20 md:py-24 bg-cream texture-grain border-y border-gold/20">
       <div className="container relative z-10">
         <SectionTitle
           eyebrow="Treatments"
@@ -402,11 +352,11 @@ function WhyUs() {
             <motion.div
               variants={staggerItem}
               key={title}
-              className="premium-card premium-card-soft premium-card-sm rounded-2xl border border-[#FFFFFF]/50 bg-[#FFFFFF]/35 p-8 backdrop-blur-xl text-center md:text-left"
+              className="premium-card premium-card-soft premium-card-sm rounded-2xl border border-white/50 bg-white/35 p-8 backdrop-blur-xl text-center md:text-left"
             >
-              <Icon className="h-8 w-8 text-[#C5A059] mb-5 mx-auto md:mx-0" strokeWidth={1.25} />
+              <Icon className="h-8 w-8 text-gold mb-5 mx-auto md:mx-0" strokeWidth={1.25} />
               <h3 className="font-serif text-2xl mb-3">{title}</h3>
-              <p className="text-[#0F0F0F]/70 font-light leading-relaxed">{desc}</p>
+              <p className="text-ink/70 font-light leading-relaxed">{desc}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -434,21 +384,21 @@ function Trust() {
           />
         </motion.div>
         <RevealItem delay={80}>
-          <div className="h-px w-14 bg-[#C5A059] mb-6" />
+          <div className="h-px w-14 bg-gold mb-6" />
           <div className="mb-4 inline-block bg-[radial-gradient(circle_at_center,hsl(var(--primary)/0.08),transparent_70%)] px-8 py-2">
-            <p className="uppercase tracking-[0.32em] text-xs text-[#C5A059]">The Clinic</p>
+            <p className="uppercase tracking-[0.32em] text-xs text-gold">The Clinic</p>
           </div>
           <h2 className="font-serif text-3xl md:text-5xl leading-tight mb-6">A sanctuary of clinical precision across Miami.</h2>
-          <p className="text-[#0F0F0F]/70 font-light mb-8 leading-relaxed">
+          <p className="text-ink/70 font-light mb-8 leading-relaxed">
             Led by our board-certified medical director, our practice is built on the belief that beauty and medicine belong together — practiced with restraint, science, and an unwavering eye for the individual.
           </p>
-          <p className="text-[#0F0F0F]/70 font-light mb-4 leading-relaxed">
+          <p className="text-ink/70 font-light mb-4 leading-relaxed">
             Every client journey starts with listening first: your concerns, your goals, your pace. We shape each roadmap to be clinically responsible and naturally flattering, not trend-driven.
           </p>
-          <p className="text-[#0F0F0F]/70 font-light mb-8 leading-relaxed">
+          <p className="text-ink/70 font-light mb-8 leading-relaxed">
             This section is intentionally kept editable as placeholder brand copy, so your team can refine voice, credentials, and positioning without changing the site structure.
           </p>
-          <div className="flex items-center gap-5 mb-8 p-5 border border-[#E7E2D9] bg-[#FFFFFF]/60 rounded-2xl backdrop-blur-xl">
+          <div className="flex items-center gap-5 mb-8 p-5 border border-[#E7E2D9] bg-white/60 rounded-2xl backdrop-blur-xl">
             <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 bg-muted">
               <img
                 src="https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?w=300&q=80&auto=format&fit=crop"
@@ -459,7 +409,7 @@ function Trust() {
             </div>
             <div>
               <p className="font-serif text-lg">Led by our board-certified medical director</p>
-              <p className="text-sm text-[#0F0F0F]/65">Founder & Lead Aesthetic Practitioner</p>
+              <p className="text-sm text-ink/65">Founder & Lead Aesthetic Practitioner</p>
             </div>
           </div>
           <ul className="space-y-3">
@@ -469,7 +419,7 @@ function Trust() {
               'A focus on sustainable, long-term skin health',
             ].map((p) => (
               <li key={p} className="flex gap-3 items-start">
-                <span className="mt-2 w-2 h-px bg-[#C5A059] flex-shrink-0" />
+                <span className="mt-2 w-2 h-px bg-gold flex-shrink-0" />
                 <span className="font-light">{p}</span>
               </li>
             ))}
@@ -501,7 +451,7 @@ function MirrorSlider({ before, after, label }: { before: string; after: string;
   return (
     <div className="space-y-2">
       <div
-        className="relative h-96 overflow-hidden rounded-xl border border-[#FFFFFF]/50 bg-black md:h-[28rem]"
+        className="relative h-96 overflow-hidden rounded-xl border border-white/50 bg-black md:h-[28rem]"
         onMouseMove={(event) => {
           if (!isMobile) updatePosition(event.clientX, event.currentTarget);
         }}
@@ -526,16 +476,16 @@ function MirrorSlider({ before, after, label }: { before: string; after: string;
         <motion.div
           animate={{ left: `${position}%` }}
           transition={{ duration: 0.14, ease: "easeOut" }}
-          className="pointer-events-none absolute inset-y-0 w-px bg-[#F9F9F7]/95 shadow-[0_0_10px_rgba(255,255,255,0.45)]"
+          className="pointer-events-none absolute inset-y-0 w-px bg-ivory/95 shadow-[0_0_10px_rgba(255,255,255,0.45)]"
         />
-        <span className="absolute left-4 top-4 text-[11px] uppercase tracking-[0.24em] text-[#0F0F0F]/85 font-medium transition-opacity" style={{ opacity: beforeOpacity }}>
+        <span className="absolute left-4 top-4 text-[11px] uppercase tracking-[0.24em] text-ink/85 font-medium transition-opacity" style={{ opacity: beforeOpacity }}>
           Before
         </span>
-        <span className="absolute right-4 top-4 text-[11px] uppercase tracking-[0.24em] text-[#0F0F0F]/85 font-medium transition-opacity" style={{ opacity: afterOpacity }}>
+        <span className="absolute right-4 top-4 text-[11px] uppercase tracking-[0.24em] text-ink/85 font-medium transition-opacity" style={{ opacity: afterOpacity }}>
           After
         </span>
       </div>
-      <figcaption className="text-[11px] uppercase tracking-[0.24em] text-[#0F0F0F]/60">{label}</figcaption>
+      <figcaption className="text-[11px] uppercase tracking-[0.24em] text-ink/60">{label}</figcaption>
     </div>
   );
 }
@@ -557,8 +507,8 @@ function SocialProof() {
               data-active={activeFilter === filter}
               className={`premium-btn premium-filter-chip rounded-full px-5 py-2 text-xs uppercase tracking-[0.26em] focus-visible:outline-none ${
                 activeFilter === filter
-                  ? "bg-[#C5A059] text-[#0F0F0F] focus-visible:ring-2 focus-visible:ring-[#C5A059]/55"
-                  : "bg-[#FFFFFF]/55 text-[#0F0F0F]/65 hover:border-[#C5A059]/45 hover:text-[#0F0F0F] focus-visible:ring-2 focus-visible:ring-[#C5A059]/45"
+                  ? "bg-gold text-ink focus-visible:ring-2 focus-visible:ring-gold/55"
+                  : "bg-white/55 text-ink/65 hover:border-gold/45 hover:text-ink focus-visible:ring-2 focus-visible:ring-gold/45"
               }`}
             >
               {filter}
@@ -589,12 +539,12 @@ function SocialProof() {
             <motion.blockquote
               variants={staggerItem}
               key={t.name}
-              className="border border-[#FFFFFF]/45 bg-[#FFFFFF]/40 backdrop-blur-xl p-8 rounded-2xl"
+              className="border border-white/45 bg-white/40 backdrop-blur-xl p-8 rounded-2xl"
             >
               <p className="font-serif text-xl italic leading-relaxed mb-6">“{t.quote}”</p>
               <footer className="flex items-center justify-between text-sm">
                 <span className="font-medium tracking-wide">— {t.name}</span>
-                <span className="text-[#C5A059] text-xs uppercase tracking-[0.2em]">{t.tag}</span>
+                <span className="text-gold text-xs uppercase tracking-[0.2em]">{t.tag}</span>
               </footer>
             </motion.blockquote>
           ))}
@@ -613,29 +563,29 @@ function Journey() {
   return (
     <section id="journey" className="py-20 md:py-24 bg-dark-warm">
       <div className="container relative z-10">
-        <SectionTitle eyebrow="The Journey" title="A Roadmap, Not a Quick Fix." titleClassName="text-[#F9F9F7]" />
+        <SectionTitle eyebrow="The Journey" title="A Roadmap, Not a Quick Fix." titleClassName="text-ivory" />
         <div className="grid md:grid-cols-3 gap-7 mb-12">
           {steps.map((s, index) => (
             <RevealItem key={s.n} delay={index * 150}>
-              <div className="journey-step-card premium-card premium-card-dark relative overflow-hidden rounded-2xl border border-[#C5A059]/25 bg-[#241e16]/50 p-6">
+              <div className="journey-step-card premium-card premium-card-dark relative overflow-hidden rounded-2xl border border-gold/25 bg-[#241e16]/50 p-6">
                 <span className="pointer-events-none select-none absolute -top-2 right-2 font-serif text-[8rem] md:text-[9rem] leading-none text-[#D0AB63] opacity-[0.07]">
                   {s.n}
                 </span>
                 <div className="relative z-10">
                   <span className="font-serif text-5xl text-[#D0AB63]">{s.n}</span>
-                  <h3 className="font-serif text-2xl mt-3 mb-2 text-[#F9F9F7]">{s.title}</h3>
-                  <p className="text-[#F9F9F7]/75 font-light leading-relaxed">{s.desc}</p>
+                  <h3 className="font-serif text-2xl mt-3 mb-2 text-ivory">{s.title}</h3>
+                  <p className="text-ivory/75 font-light leading-relaxed">{s.desc}</p>
                 </div>
               </div>
             </RevealItem>
           ))}
         </div>
-        <div className="border-t border-[#C5A059]/30 pt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-sm">
-          <p className="flex items-center gap-2 text-[#F9F9F7]/75">
-            <MapPin className="h-4 w-4 text-[#C5A059]" />
+        <div className="border-t border-gold/30 pt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-sm">
+          <p className="flex items-center gap-2 text-ivory/75">
+            <MapPin className="h-4 w-4 text-gold" />
             Proudly serving Miami across three locations.
           </p>
-          <p className="text-[#F9F9F7]/70 italic">Comprehensive aftercare for sustained, long-term skin health.</p>
+          <p className="text-ivory/70 italic">Comprehensive aftercare for sustained, long-term skin health.</p>
         </div>
       </div>
     </section>
@@ -649,11 +599,11 @@ function FAQ() {
         <SectionTitle eyebrow="FAQ" title="Considered Answers." />
         <Accordion type="single" collapsible className="w-full">
           {FAQS.map((f, i) => (
-            <AccordionItem key={i} value={`item-${i}`} className="border-[#0F0F0F]/15">
-              <AccordionTrigger className="font-serif text-xl text-left hover:no-underline hover:text-[#C5A059] py-6">
+            <AccordionItem key={i} value={`item-${i}`} className="border-ink/15">
+              <AccordionTrigger className="font-serif text-xl text-left hover:no-underline hover:text-gold py-6">
                 {f.q}
               </AccordionTrigger>
-              <AccordionContent className="text-[#0F0F0F]/70 font-light text-base leading-relaxed">
+              <AccordionContent className="text-ink/70 font-light text-base leading-relaxed">
                 {f.a}
               </AccordionContent>
             </AccordionItem>
@@ -665,6 +615,7 @@ function FAQ() {
 }
 
 function Locations() {
+  const { open } = useBooking();
   return (
     <section
       id="locations"
@@ -688,28 +639,37 @@ function Locations() {
             <motion.article
               key={location.name}
               variants={staggerItem}
-              className="rounded-2xl border border-[#FFFFFF]/50 bg-white/60 p-6 backdrop-blur-md shadow-[0_10px_40px_rgba(15,15,15,0.08)]"
+              className="rounded-2xl border border-white/50 bg-white/60 p-6 backdrop-blur-md shadow-[0_10px_40px_rgba(15,15,15,0.08)]"
             >
               <p className="font-serif text-2xl mb-4">{location.name}</p>
-              <ul className="space-y-3 text-sm font-light text-[#0F0F0F]/75 mb-6">
+              <ul className="space-y-3 text-sm font-light text-ink/75 mb-6">
                 <li className="flex gap-2">
-                  <MapPin className="h-4 w-4 mt-0.5 text-[#C5A059] flex-shrink-0" />
+                  <MapPin className="h-4 w-4 mt-0.5 text-gold flex-shrink-0" />
                   <span>{location.address}</span>
                 </li>
                 <li className="flex gap-2 items-center">
-                  <Phone className="h-4 w-4 text-[#C5A059] flex-shrink-0" />
+                  <Phone className="h-4 w-4 text-gold flex-shrink-0" />
                   <span>{location.phone}</span>
                 </li>
                 <li>{location.hours}</li>
               </ul>
-              <a
-                href={location.mapEmbedUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center text-xs uppercase tracking-[0.2em] text-[#C5A059] hover:text-[#0F0F0F] transition-colors"
-              >
-                Get Directions
-              </a>
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+                <button
+                  type="button"
+                  onClick={() => open({ locationId: location.id })}
+                  className="inline-flex items-center rounded text-xs uppercase tracking-[0.2em] text-gold transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50"
+                >
+                  Book this location
+                </button>
+                <a
+                  href={location.mapEmbedUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center rounded text-xs uppercase tracking-[0.2em] text-ink/60 transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50"
+                >
+                  Get Directions
+                </a>
+              </div>
             </motion.article>
           ))}
         </motion.div>
@@ -721,7 +681,7 @@ function Locations() {
 function FinalCTA() {
   const { open } = useBooking();
   return (
-    <section className="relative py-24 md:py-28 overflow-hidden bg-[#0F0F0F]">
+    <section className="relative py-24 md:py-28 overflow-hidden bg-ink">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(197,160,89,0.3),transparent_45%),radial-gradient(circle_at_80%_75%,rgba(197,160,89,0.2),transparent_45%)]" />
       <div className="container relative z-10 text-center max-w-3xl text-primary-foreground">
         <div className="w-12 h-px bg-white/60 mx-auto mb-8" />
@@ -729,7 +689,7 @@ function FinalCTA() {
         <p className="text-lg md:text-xl font-light mb-10 text-white/90">
           Custom plans tailored to your unique anatomy. No cookie-cutter solutions — only thoughtful, medical-grade transformation.
         </p>
-        <Button onClick={open} className="premium-btn premium-btn-gold h-12 px-10 bg-[#C5A059] text-[#0F0F0F] hover:bg-[#C5A059]/90 text-base tracking-wide">
+        <Button onClick={open} className="premium-btn premium-btn-gold h-12 px-10 bg-gold text-ink hover:bg-gold/90 text-base tracking-wide">
           Book Your Bespoke Consultation
         </Button>
       </div>
@@ -763,7 +723,7 @@ function MembershipSection() {
   ];
 
   return (
-    <section id="membership" className="py-20 md:py-24 bg-gold-soft border-y border-[#C5A059]/25">
+    <section id="membership" className="py-20 md:py-24 bg-gold-soft border-y border-gold/25">
       <div className="container max-w-4xl">
         <SectionTitle
           eyebrow="Membership"
@@ -774,10 +734,10 @@ function MembershipSection() {
           {membershipTiers.map((tier) => (
             <article
               key={tier.title}
-              className="membership-tier-card premium-card premium-card-soft rounded-2xl border border-[#FFFFFF]/55 bg-[#FFFFFF]/45 p-6 backdrop-blur-xl"
+              className="membership-tier-card premium-card premium-card-soft rounded-2xl border border-white/55 bg-white/45 p-6 backdrop-blur-xl"
             >
-              <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-[#C5A059]">{tier.title}</p>
-              <p className="text-[#0F0F0F]/75 font-light leading-relaxed">{tier.copy}</p>
+              <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-gold">{tier.title}</p>
+              <p className="text-ink/75 font-light leading-relaxed">{tier.copy}</p>
             </article>
           ))}
         </div>
@@ -795,7 +755,7 @@ function ContactSection() {
           title="Start With a Consultation."
           intro="This placeholder contact section supports anchor navigation and can be replaced with finalized contact details anytime."
         />
-        <div className="space-y-5 text-[#0F0F0F]/75 font-light leading-relaxed">
+        <div className="space-y-5 text-ink/75 font-light leading-relaxed">
           <p>
             Reach out for treatment guidance, scheduling support, or questions about which protocol best aligns with your goals and timeline.
           </p>
@@ -807,7 +767,7 @@ function ContactSection() {
           </p>
         </div>
         <div className="mt-8">
-          <BookButton className="h-11 px-8 text-[#0F0F0F]">
+          <BookButton className="h-11 px-8 text-ink">
             Book Consultation
           </BookButton>
         </div>
@@ -818,9 +778,9 @@ function ContactSection() {
 
 function MobileBookingBar() {
   return (
-    <div className="fixed bottom-0 inset-x-0 z-50 border-t border-[#F9F9F7]/15 bg-[#0F0F0F]/85 backdrop-blur-xl md:hidden">
+    <div className="fixed bottom-0 inset-x-0 z-50 border-t border-ivory/15 bg-ink/85 backdrop-blur-xl md:hidden">
       <div className="container py-3">
-        <BookButton className="h-11 w-full text-[#0F0F0F]">
+        <BookButton className="h-11 w-full text-ink">
           Book Consultation
         </BookButton>
       </div>
@@ -831,9 +791,9 @@ function MobileBookingBar() {
 const Index = () => {
   const shouldReduceMotion = useReducedMotion();
   return (
-    <div className="relative min-h-screen bg-[#F9F9F7] text-[#0F0F0F]">
+    <div className="relative min-h-screen bg-ivory text-ink">
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-        <div className="absolute inset-0 bg-[#F9F9F7]" />
+        <div className="absolute inset-0 bg-ivory" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_15%,rgba(197,160,89,0.14),transparent_42%),radial-gradient(circle_at_78%_12%,rgba(15,15,15,0.05),transparent_34%),radial-gradient(circle_at_50%_88%,rgba(197,160,89,0.09),transparent_40%)]" />
         <motion.div
           className="absolute -left-24 top-24 h-[26rem] w-[26rem] rounded-full bg-[radial-gradient(circle,rgba(197,160,89,0.16)_0%,rgba(197,160,89,0)_72%)] blur-3xl"

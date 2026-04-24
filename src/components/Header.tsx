@@ -58,13 +58,13 @@ const Header = () => {
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b bg-[#F9F9F7]/95 backdrop-blur transition-shadow ${
+      className={`sticky top-0 z-50 border-b bg-ivory/95 backdrop-blur transition-shadow ${
         scrolled ? "shadow-[0_8px_24px_rgba(15,15,15,0.08)]" : ""
       }`}
     >
       <div className="container flex h-16 items-center justify-between gap-4">
-        <a href="#top" className="font-serif text-xl tracking-wide text-[#0F0F0F]">
-          Med Aesthetics <span className="text-[#C5A059]">Miami</span>
+        <a href="#top" className="font-serif text-xl tracking-wide text-ink">
+          Med Aesthetics <span className="text-gold">Miami</span>
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">
@@ -87,7 +87,7 @@ const Header = () => {
               aria-expanded={desktopMenuOpen}
               aria-controls="treatments-menu"
               onClick={() => setDesktopMenuOpen((value) => !value)}
-              className="inline-flex items-center gap-1 rounded text-sm font-medium text-[#0F0F0F]/70 transition-colors hover:text-[#C5A059] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059]/55 focus-visible:ring-offset-2 focus-visible:ring-offset-[#F9F9F7]"
+              className="inline-flex items-center gap-1 rounded text-sm font-medium text-ink/70 transition-colors hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/55 focus-visible:ring-offset-2 focus-visible:ring-offset-ivory"
             >
               Treatments
               <ChevronDown
@@ -108,7 +108,7 @@ const Header = () => {
                 role="menuitem"
                 href="#treatments"
                 onClick={() => setDesktopMenuOpen(false)}
-                className="block rounded-lg px-3 py-2 text-sm text-[#0F0F0F]/75 transition-colors hover:bg-[#F5F0E8] hover:text-[#0F0F0F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059]/55"
+                className="block rounded-lg px-3 py-2 text-sm text-ink/75 transition-colors hover:bg-[#F5F0E8] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/55"
               >
                 All Treatments
               </a>
@@ -116,7 +116,7 @@ const Header = () => {
                 role="menuitem"
                 href="#journey"
                 onClick={() => setDesktopMenuOpen(false)}
-                className="block rounded-lg px-3 py-2 text-sm text-[#0F0F0F]/75 transition-colors hover:bg-[#F5F0E8] hover:text-[#0F0F0F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059]/55"
+                className="block rounded-lg px-3 py-2 text-sm text-ink/75 transition-colors hover:bg-[#F5F0E8] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/55"
               >
                 Your Journey
               </a>
@@ -127,7 +127,7 @@ const Header = () => {
                   setDesktopMenuOpen(false);
                   open();
                 }}
-                className="block w-full rounded-lg px-3 py-2 text-left text-sm text-[#0F0F0F]/75 transition-colors hover:bg-[#F5F0E8] hover:text-[#0F0F0F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059]/55"
+                className="block w-full rounded-lg px-3 py-2 text-left text-sm text-ink/75 transition-colors hover:bg-[#F5F0E8] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/55"
               >
                 Book Consultation
               </button>
@@ -138,7 +138,7 @@ const Header = () => {
             <a
               key={item.label}
               href={item.to}
-              className="text-sm font-medium text-[#0F0F0F]/70 transition-colors hover:text-[#C5A059]"
+              className="text-sm font-medium text-ink/70 transition-colors hover:text-gold"
             >
               {item.label}
             </a>
@@ -149,7 +149,7 @@ const Header = () => {
           <button
             type="button"
             onClick={() => open()}
-            className="premium-btn premium-btn-gold inline-flex h-10 items-center rounded-md bg-[#C5A059] px-5 text-sm font-medium tracking-wide text-[#0F0F0F] hover:bg-[#C5A059]/90"
+            className="premium-btn premium-btn-gold inline-flex h-10 items-center rounded-md bg-gold px-5 text-sm font-medium tracking-wide text-ink hover:bg-gold/90"
           >
             Book Consultation
           </button>
@@ -157,7 +157,7 @@ const Header = () => {
 
         <button
           type="button"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[#E7E2D9] text-[#0F0F0F] transition-colors hover:border-[#C5A059]/60 hover:text-[#C5A059] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059]/50 md:hidden"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[#E7E2D9] text-ink transition-colors hover:border-gold/60 hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50 md:hidden"
           onClick={() => setDrawerOpen(true)}
           aria-label="Open navigation menu"
         >
@@ -176,17 +176,17 @@ const Header = () => {
           aria-label="Close menu overlay"
         />
         <aside
-          className={`absolute right-0 top-0 h-full w-full bg-[#F9F9F7] p-6 transition-transform duration-300 ${
+          className={`absolute right-0 top-0 h-full w-full bg-ivory p-6 transition-transform duration-300 ${
             drawerOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
           <div className="mb-8 flex items-center justify-between">
-            <a href="#top" onClick={() => setDrawerOpen(false)} className="font-serif text-xl text-[#0F0F0F]">
-              Med Aesthetics <span className="text-[#C5A059]">Miami</span>
+            <a href="#top" onClick={() => setDrawerOpen(false)} className="font-serif text-xl text-ink">
+              Med Aesthetics <span className="text-gold">Miami</span>
             </a>
             <button
               type="button"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[#E7E2D9] text-[#0F0F0F] transition-colors hover:border-[#C5A059]/60 hover:text-[#C5A059] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059]/50"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[#E7E2D9] text-ink transition-colors hover:border-gold/60 hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50"
               onClick={() => setDrawerOpen(false)}
               aria-label="Close navigation menu"
             >
@@ -198,7 +198,7 @@ const Header = () => {
             <button
               type="button"
               onClick={() => setTreatmentsOpen((current) => !current)}
-              className="flex w-full items-center justify-between border-b border-[#E7E2D9] py-3 text-left text-base font-medium text-[#0F0F0F]"
+              className="flex w-full items-center justify-between border-b border-[#E7E2D9] py-3 text-left text-base font-medium text-ink"
             >
               <span>Treatments</span>
               <ChevronDown className={`h-5 w-5 transition-transform ${treatmentsOpen ? "rotate-180" : ""}`} />
@@ -206,10 +206,10 @@ const Header = () => {
             {treatmentsOpen && (
               <ul className="space-y-2 pl-3">
                 <li>
-                  <a href="#treatments" onClick={() => setDrawerOpen(false)} className="block py-1 text-sm text-[#0F0F0F]/75 transition-colors hover:text-[#C5A059]">All Treatments</a>
+                  <a href="#treatments" onClick={() => setDrawerOpen(false)} className="block py-1 text-sm text-ink/75 transition-colors hover:text-gold">All Treatments</a>
                 </li>
                 <li>
-                  <a href="#journey" onClick={() => setDrawerOpen(false)} className="block py-1 text-sm text-[#0F0F0F]/75 transition-colors hover:text-[#C5A059]">Your Journey</a>
+                  <a href="#journey" onClick={() => setDrawerOpen(false)} className="block py-1 text-sm text-ink/75 transition-colors hover:text-gold">Your Journey</a>
                 </li>
                 <li>
                   <button
@@ -218,7 +218,7 @@ const Header = () => {
                       setDrawerOpen(false);
                       open();
                     }}
-                    className="block py-1 text-sm text-[#0F0F0F]/75 transition-colors hover:text-[#C5A059] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059]/50"
+                    className="block py-1 text-sm text-ink/75 transition-colors hover:text-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold/50"
                   >
                     Book Consultation
                   </button>
@@ -231,7 +231,7 @@ const Header = () => {
                 <a
                   href={item.to}
                   onClick={() => setDrawerOpen(false)}
-                  className="text-sm font-medium text-[#0F0F0F]/70 transition-colors hover:text-[#C5A059]"
+                  className="text-sm font-medium text-ink/70 transition-colors hover:text-gold"
                 >
                   {item.label}
                 </a>
@@ -245,7 +245,7 @@ const Header = () => {
               setDrawerOpen(false);
               open();
             }}
-            className="premium-btn premium-btn-gold mt-8 inline-flex h-11 w-full items-center justify-center rounded-md bg-[#C5A059] px-5 text-sm font-medium tracking-wide text-[#0F0F0F] hover:bg-[#C5A059]/90"
+            className="premium-btn premium-btn-gold mt-8 inline-flex h-11 w-full items-center justify-center rounded-md bg-gold px-5 text-sm font-medium tracking-wide text-ink hover:bg-gold/90"
           >
             Book Consultation
           </button>
