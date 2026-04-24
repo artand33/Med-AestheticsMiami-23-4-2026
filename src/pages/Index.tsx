@@ -189,6 +189,7 @@ const staggerItem = {
 
 function Hero() {
   const ref = useRef<HTMLElement | null>(null);
+  const shouldReduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -200,10 +201,18 @@ function Hero() {
     <section id="top" ref={ref} className="relative min-h-[94vh] flex items-center overflow-hidden">
       <motion.img
         src="https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=1800&q=80&auto=format&fit=crop"
+        srcSet="
+          https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=900&q=80&auto=format&fit=crop 900w,
+          https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=1400&q=80&auto=format&fit=crop 1400w,
+          https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=1800&q=80&auto=format&fit=crop 1800w,
+          https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=2400&q=80&auto=format&fit=crop 2400w"
+        sizes="100vw"
         alt="Glowing skin close-up — luxury medical aesthetics"
-        style={{ scale: heroScale }}
+        style={shouldReduceMotion ? undefined : { scale: heroScale }}
         className="absolute inset-0 w-full h-full object-cover origin-center"
         loading="eager"
+        fetchPriority="high"
+        decoding="async"
       />
       <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/55 to-black/35" />
       <motion.div
@@ -224,12 +233,9 @@ function Hero() {
           Personalized aesthetic plans for visible, natural results across 3 Miami locations, with 4.9★ from 340+ patients.
         </p>
         <div>
-          <BookButton className="h-12 px-8 text-base bg-[#C5A059] hover:bg-[#C5A059]/90 text-[#0F0F0F]">
+          <BookButton className="h-12 px-8 text-base text-[#0F0F0F]">
             Book Free Consultation
           </BookButton>
-          <p className="mt-5 text-xs sm:text-sm text-[#F9F9F7]/80 font-light">
-            4.9★ rating · 340+ reviews · 15+ years in Miami · 3 Miami locations
-          </p>
         </div>
       </motion.div>
     </section>
@@ -327,7 +333,7 @@ function TreatmentCard({ service, index }: { service: (typeof SERVICES)[number];
   return (
     <article
       ref={elementRef}
-      className={`reveal-item treatment-card rounded-2xl border border-stone-100 bg-white p-6 ${isVisible ? "is-visible" : ""}`}
+      className={`reveal-item treatment-card premium-card premium-card-soft rounded-2xl border border-stone-100 bg-white p-6 ${isVisible ? "is-visible" : ""}`}
       style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 80}ms` }}
     >
       <div className="mb-4 flex items-center gap-3">
@@ -396,7 +402,7 @@ function WhyUs() {
             <motion.div
               variants={staggerItem}
               key={title}
-              className="rounded-2xl border border-[#FFFFFF]/50 bg-[#FFFFFF]/35 p-8 backdrop-blur-xl text-center md:text-left"
+              className="premium-card premium-card-soft premium-card-sm rounded-2xl border border-[#FFFFFF]/50 bg-[#FFFFFF]/35 p-8 backdrop-blur-xl text-center md:text-left"
             >
               <Icon className="h-8 w-8 text-[#C5A059] mb-5 mx-auto md:mx-0" strokeWidth={1.25} />
               <h3 className="font-serif text-2xl mb-3">{title}</h3>
@@ -503,9 +509,19 @@ function MirrorSlider({ before, after, label }: { before: string; after: string;
           if (isMobile) updatePosition(event.touches[0].clientX, event.currentTarget);
         }}
       >
-        <img src={before} alt="" className="h-full w-full object-cover" loading="lazy" />
+        <img
+          src={before}
+          alt={`${label} — before illustrative reference image`}
+          className="h-full w-full object-cover"
+          loading="lazy"
+        />
         <motion.div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }} transition={{ duration: 0.15, ease: "easeOut" }}>
-          <img src={after} alt="" className="h-full w-full object-cover" loading="lazy" />
+          <img
+            src={after}
+            alt={`${label} — after illustrative reference image`}
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
         </motion.div>
         <motion.div
           animate={{ left: `${position}%` }}
@@ -538,10 +554,11 @@ function SocialProof() {
               key={filter}
               type="button"
               onClick={() => setActiveFilter(filter)}
-              className={`rounded-full px-5 py-2 text-xs uppercase tracking-[0.26em] transition-all ${
+              data-active={activeFilter === filter}
+              className={`premium-btn premium-filter-chip rounded-full px-5 py-2 text-xs uppercase tracking-[0.26em] focus-visible:outline-none ${
                 activeFilter === filter
-                  ? "bg-[#C5A059] text-[#0F0F0F] shadow-[0_8px_18px_rgba(197,160,89,0.3)]"
-                  : "bg-[#FFFFFF]/55 text-[#0F0F0F]/65 border border-[#0F0F0F]/10 hover:border-[#C5A059]/45 hover:text-[#0F0F0F]"
+                  ? "bg-[#C5A059] text-[#0F0F0F] focus-visible:ring-2 focus-visible:ring-[#C5A059]/55"
+                  : "bg-[#FFFFFF]/55 text-[#0F0F0F]/65 hover:border-[#C5A059]/45 hover:text-[#0F0F0F] focus-visible:ring-2 focus-visible:ring-[#C5A059]/45"
               }`}
             >
               {filter}
@@ -600,8 +617,8 @@ function Journey() {
         <div className="grid md:grid-cols-3 gap-7 mb-12">
           {steps.map((s, index) => (
             <RevealItem key={s.n} delay={index * 150}>
-              <div className="relative border-t border-[#C5A059] pt-6 overflow-hidden">
-                <span className="pointer-events-none select-none absolute -top-2 right-2 font-serif text-[8rem] md:text-[9rem] leading-none text-[#D0AB63] opacity-5">
+              <div className="journey-step-card premium-card premium-card-dark relative overflow-hidden rounded-2xl border border-[#C5A059]/25 bg-[#241e16]/50 p-6">
+                <span className="pointer-events-none select-none absolute -top-2 right-2 font-serif text-[8rem] md:text-[9rem] leading-none text-[#D0AB63] opacity-[0.07]">
                   {s.n}
                 </span>
                 <div className="relative z-10">
@@ -712,7 +729,7 @@ function FinalCTA() {
         <p className="text-lg md:text-xl font-light mb-10 text-white/90">
           Custom plans tailored to your unique anatomy. No cookie-cutter solutions — only thoughtful, medical-grade transformation.
         </p>
-        <Button onClick={open} className="h-12 px-10 bg-[#C5A059] text-[#0F0F0F] hover:bg-[#C5A059]/90 text-base tracking-wide">
+        <Button onClick={open} className="premium-btn premium-btn-gold h-12 px-10 bg-[#C5A059] text-[#0F0F0F] hover:bg-[#C5A059]/90 text-base tracking-wide">
           Book Your Bespoke Consultation
         </Button>
       </div>
@@ -730,6 +747,21 @@ function SectionHairline() {
 }
 
 function MembershipSection() {
+  const membershipTiers = [
+    {
+      title: "Foundation",
+      copy: "Membership clients can receive routine treatment planning, priority scheduling windows, and curated maintenance recommendations based on seasonal skin and lifestyle changes.",
+    },
+    {
+      title: "Refinement",
+      copy: "Program details may include preferred pricing, bundled service credits, and quarterly check-ins designed to keep your long-term transformation roadmap consistent and measurable.",
+    },
+    {
+      title: "Signature",
+      copy: "Final tiers, terms, and inclusions can be updated later; this section keeps the one-page navigation complete and gives your team a live area for future copy refinements.",
+    },
+  ];
+
   return (
     <section id="membership" className="py-20 md:py-24 bg-gold-soft border-y border-[#C5A059]/25">
       <div className="container max-w-4xl">
@@ -738,16 +770,16 @@ function MembershipSection() {
           title="Care That Grows With You."
           intro="A simple placeholder for a future membership program with recurring support and elevated benefits."
         />
-        <div className="space-y-5 text-[#0F0F0F]/75 font-light leading-relaxed">
-          <p>
-            Membership clients can receive routine treatment planning, priority scheduling windows, and curated maintenance recommendations based on seasonal skin and lifestyle changes.
-          </p>
-          <p>
-            Program details may include preferred pricing, bundled service credits, and quarterly check-ins designed to keep your long-term transformation roadmap consistent and measurable.
-          </p>
-          <p>
-            Final tiers, terms, and inclusions can be updated later; this section keeps the one-page navigation complete and gives your team a live area for future copy refinements.
-          </p>
+        <div className="grid gap-5 md:grid-cols-3">
+          {membershipTiers.map((tier) => (
+            <article
+              key={tier.title}
+              className="membership-tier-card premium-card premium-card-soft rounded-2xl border border-[#FFFFFF]/55 bg-[#FFFFFF]/45 p-6 backdrop-blur-xl"
+            >
+              <p className="mb-3 text-[11px] uppercase tracking-[0.28em] text-[#C5A059]">{tier.title}</p>
+              <p className="text-[#0F0F0F]/75 font-light leading-relaxed">{tier.copy}</p>
+            </article>
+          ))}
         </div>
       </div>
     </section>
@@ -775,7 +807,7 @@ function ContactSection() {
           </p>
         </div>
         <div className="mt-8">
-          <BookButton className="h-11 px-8 bg-[#C5A059] hover:bg-[#C5A059]/90 text-[#0F0F0F]">
+          <BookButton className="h-11 px-8 text-[#0F0F0F]">
             Book Consultation
           </BookButton>
         </div>
@@ -788,7 +820,7 @@ function MobileBookingBar() {
   return (
     <div className="fixed bottom-0 inset-x-0 z-50 border-t border-[#F9F9F7]/15 bg-[#0F0F0F]/85 backdrop-blur-xl md:hidden">
       <div className="container py-3">
-        <BookButton className="h-11 w-full bg-[#C5A059] hover:bg-[#C5A059]/90 text-[#0F0F0F]">
+        <BookButton className="h-11 w-full text-[#0F0F0F]">
           Book Consultation
         </BookButton>
       </div>
@@ -797,6 +829,7 @@ function MobileBookingBar() {
 }
 
 const Index = () => {
+  const shouldReduceMotion = useReducedMotion();
   return (
     <div className="relative min-h-screen bg-[#F9F9F7] text-[#0F0F0F]">
       <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
@@ -804,16 +837,16 @@ const Index = () => {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_15%,rgba(197,160,89,0.14),transparent_42%),radial-gradient(circle_at_78%_12%,rgba(15,15,15,0.05),transparent_34%),radial-gradient(circle_at_50%_88%,rgba(197,160,89,0.09),transparent_40%)]" />
         <motion.div
           className="absolute -left-24 top-24 h-[26rem] w-[26rem] rounded-full bg-[radial-gradient(circle,rgba(197,160,89,0.16)_0%,rgba(197,160,89,0)_72%)] blur-3xl"
-          animate={{ x: [0, 42, 0], y: [0, -24, 0] }}
-          transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
+          animate={shouldReduceMotion ? undefined : { x: [0, 42, 0], y: [0, -24, 0] }}
+          transition={shouldReduceMotion ? undefined : { duration: 24, repeat: Infinity, ease: "easeInOut" }}
         />
         <motion.div
           className="absolute -right-28 bottom-12 h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,rgba(15,15,15,0.08)_0%,rgba(15,15,15,0)_74%)] blur-3xl"
-          animate={{ x: [0, -36, 0], y: [0, 26, 0] }}
-          transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
+          animate={shouldReduceMotion ? undefined : { x: [0, -36, 0], y: [0, 26, 0] }}
+          transition={shouldReduceMotion ? undefined : { duration: 28, repeat: Infinity, ease: "easeInOut" }}
         />
       </div>
-      <main className="pb-20 md:pb-0">
+      <main id="main-content" tabIndex={-1} className="pb-20 md:pb-0 focus:outline-none">
         <Hero />
         <TrustSignals />
         <SectionHairline />

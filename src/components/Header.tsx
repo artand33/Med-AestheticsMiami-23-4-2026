@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import { useBooking } from "@/components/BookingDialog";
 
@@ -16,7 +16,10 @@ const Header = () => {
   const { open } = useBooking();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [treatmentsOpen, setTreatmentsOpen] = useState(false);
+  const [desktopMenuOpen, setDesktopMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const desktopMenuRef = useRef<HTMLDivElement | null>(null);
+  const desktopMenuTriggerRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -32,6 +35,27 @@ const Header = () => {
     };
   }, [drawerOpen]);
 
+  useEffect(() => {
+    if (!desktopMenuOpen) return;
+    const onPointerDown = (event: PointerEvent) => {
+      if (!desktopMenuRef.current?.contains(event.target as Node)) {
+        setDesktopMenuOpen(false);
+      }
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setDesktopMenuOpen(false);
+        desktopMenuTriggerRef.current?.focus();
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [desktopMenuOpen]);
+
   return (
     <header
       className={`sticky top-0 z-50 border-b bg-[#F9F9F7]/95 backdrop-blur transition-shadow ${
@@ -44,21 +68,66 @@ const Header = () => {
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">
-          <div className="group relative">
-            <a
-              href="#treatments"
-              className="inline-flex items-center gap-1 text-sm font-medium text-[#0F0F0F]/70 transition-colors hover:text-[#C5A059]"
+          <div
+            ref={desktopMenuRef}
+            className="relative"
+            onMouseEnter={() => setDesktopMenuOpen(true)}
+            onMouseLeave={() => setDesktopMenuOpen(false)}
+            onFocus={() => setDesktopMenuOpen(true)}
+            onBlur={(event) => {
+              if (!desktopMenuRef.current?.contains(event.relatedTarget as Node | null)) {
+                setDesktopMenuOpen(false);
+              }
+            }}
+          >
+            <button
+              ref={desktopMenuTriggerRef}
+              type="button"
+              aria-haspopup="true"
+              aria-expanded={desktopMenuOpen}
+              aria-controls="treatments-menu"
+              onClick={() => setDesktopMenuOpen((value) => !value)}
+              className="inline-flex items-center gap-1 rounded text-sm font-medium text-[#0F0F0F]/70 transition-colors hover:text-[#C5A059] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059]/55 focus-visible:ring-offset-2 focus-visible:ring-offset-[#F9F9F7]"
             >
               Treatments
-              <ChevronDown className="h-4 w-4" />
-            </a>
-            <div className="invisible absolute left-0 top-full z-30 mt-3 w-72 translate-y-1 rounded-xl border border-[#E7E2D9] bg-white p-3 opacity-0 shadow-lg transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
-              <a href="#treatments" className="block rounded-lg px-3 py-2 text-sm text-[#0F0F0F]/75 transition-colors hover:bg-[#F5F0E8] hover:text-[#0F0F0F]">All Treatments</a>
-              <a href="#journey" className="block rounded-lg px-3 py-2 text-sm text-[#0F0F0F]/75 transition-colors hover:bg-[#F5F0E8] hover:text-[#0F0F0F]">Your Journey</a>
+              <ChevronDown
+                className={`h-4 w-4 transition-transform ${desktopMenuOpen ? "rotate-180" : ""}`}
+              />
+            </button>
+            <div
+              id="treatments-menu"
+              role="menu"
+              aria-label="Treatments menu"
+              className={`absolute left-0 top-full z-30 mt-3 w-72 rounded-xl border border-[#E7E2D9] bg-white p-3 shadow-lg transition-all ${
+                desktopMenuOpen
+                  ? "visible translate-y-0 opacity-100"
+                  : "pointer-events-none invisible -translate-y-1 opacity-0"
+              }`}
+            >
+              <a
+                role="menuitem"
+                href="#treatments"
+                onClick={() => setDesktopMenuOpen(false)}
+                className="block rounded-lg px-3 py-2 text-sm text-[#0F0F0F]/75 transition-colors hover:bg-[#F5F0E8] hover:text-[#0F0F0F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059]/55"
+              >
+                All Treatments
+              </a>
+              <a
+                role="menuitem"
+                href="#journey"
+                onClick={() => setDesktopMenuOpen(false)}
+                className="block rounded-lg px-3 py-2 text-sm text-[#0F0F0F]/75 transition-colors hover:bg-[#F5F0E8] hover:text-[#0F0F0F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059]/55"
+              >
+                Your Journey
+              </a>
               <button
+                role="menuitem"
                 type="button"
-                onClick={() => open()}
-                className="block w-full rounded-lg px-3 py-2 text-left text-sm text-[#0F0F0F]/75 transition-colors hover:bg-[#F5F0E8] hover:text-[#0F0F0F]"
+                onClick={() => {
+                  setDesktopMenuOpen(false);
+                  open();
+                }}
+                className="block w-full rounded-lg px-3 py-2 text-left text-sm text-[#0F0F0F]/75 transition-colors hover:bg-[#F5F0E8] hover:text-[#0F0F0F] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059]/55"
               >
                 Book Consultation
               </button>
@@ -80,7 +149,7 @@ const Header = () => {
           <button
             type="button"
             onClick={() => open()}
-            className="inline-flex h-10 items-center rounded-md bg-[#C5A059] px-5 text-sm font-medium text-[#0F0F0F] transition-colors hover:bg-[#b8944d]"
+            className="premium-btn premium-btn-gold inline-flex h-10 items-center rounded-md bg-[#C5A059] px-5 text-sm font-medium tracking-wide text-[#0F0F0F] hover:bg-[#C5A059]/90"
           >
             Book Consultation
           </button>
@@ -88,7 +157,7 @@ const Header = () => {
 
         <button
           type="button"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[#E7E2D9] text-[#0F0F0F] md:hidden"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[#E7E2D9] text-[#0F0F0F] transition-colors hover:border-[#C5A059]/60 hover:text-[#C5A059] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059]/50 md:hidden"
           onClick={() => setDrawerOpen(true)}
           aria-label="Open navigation menu"
         >
@@ -117,7 +186,7 @@ const Header = () => {
             </a>
             <button
               type="button"
-              className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[#E7E2D9] text-[#0F0F0F]"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[#E7E2D9] text-[#0F0F0F] transition-colors hover:border-[#C5A059]/60 hover:text-[#C5A059] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059]/50"
               onClick={() => setDrawerOpen(false)}
               aria-label="Close navigation menu"
             >
@@ -149,7 +218,7 @@ const Header = () => {
                       setDrawerOpen(false);
                       open();
                     }}
-                    className="block py-1 text-sm text-[#0F0F0F]/75 transition-colors hover:text-[#C5A059]"
+                    className="block py-1 text-sm text-[#0F0F0F]/75 transition-colors hover:text-[#C5A059] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C5A059]/50"
                   >
                     Book Consultation
                   </button>
@@ -176,7 +245,7 @@ const Header = () => {
               setDrawerOpen(false);
               open();
             }}
-            className="mt-8 inline-flex h-11 w-full items-center justify-center rounded-md bg-[#C5A059] px-5 text-sm font-medium text-[#0F0F0F] transition-colors hover:bg-[#b8944d]"
+            className="premium-btn premium-btn-gold mt-8 inline-flex h-11 w-full items-center justify-center rounded-md bg-[#C5A059] px-5 text-sm font-medium tracking-wide text-[#0F0F0F] hover:bg-[#C5A059]/90"
           >
             Book Consultation
           </button>

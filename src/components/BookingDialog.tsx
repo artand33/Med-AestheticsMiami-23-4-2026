@@ -268,13 +268,13 @@ export function BookButton({ className = "", children = "Book Your Bespoke Consu
   const { open } = useBooking();
   if (variant === "outline") {
     return (
-      <Button onClick={open} variant="outline" className={`border-gold text-gold hover:bg-gold hover:text-primary-foreground ${className}`}>
+      <Button onClick={open} variant="outline" className={`premium-btn premium-btn-outline border-gold text-gold hover:bg-gold hover:text-primary-foreground ${className}`}>
         {children}
       </Button>
     );
   }
   return (
-    <Button onClick={open} className={`bg-gold hover:bg-gold/90 text-primary-foreground tracking-wide ${className}`}>
+    <Button onClick={open} className={`premium-btn premium-btn-gold bg-gold hover:bg-gold/90 text-primary-foreground tracking-wide ${className}`}>
       {children}
     </Button>
   );

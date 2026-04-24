@@ -1,4 +1,5 @@
-import { Facebook, Instagram, Linkedin, Star } from "lucide-react";
+import { Instagram, Star } from "lucide-react";
+import { Link } from "react-router-dom";
 import { treatments } from "@/lib/treatments";
 import { locations } from "@/lib/locations";
 
@@ -61,20 +62,20 @@ const Footer = () => {
         <div className="container flex flex-col gap-4 py-5 text-xs text-[#F9F9F7]/60 md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} Med Aesthetics Miami. All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <a href="#top" className="transition-colors hover:text-[#F9F9F7]">
+            <Link to="/privacy" className="transition-colors hover:text-[#F9F9F7]">
               Privacy
-            </a>
-            <a href="#top" className="transition-colors hover:text-[#F9F9F7]">
+            </Link>
+            <Link to="/terms" className="transition-colors hover:text-[#F9F9F7]">
               Terms
-            </a>
-            <a href="https://www.instagram.com/medaesthetics.miami" target="_blank" rel="noreferrer" aria-label="Instagram" className="transition-colors hover:text-[#F9F9F7]">
+            </Link>
+            <a
+              href="https://www.instagram.com/medaesthetics.miami"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Instagram"
+              className="transition-colors hover:text-[#F9F9F7]"
+            >
               <Instagram className="h-4 w-4" />
-            </a>
-            <a href="https://www.facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="transition-colors hover:text-[#F9F9F7]">
-              <Facebook className="h-4 w-4" />
-            </a>
-            <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn" className="transition-colors hover:text-[#F9F9F7]">
-              <Linkedin className="h-4 w-4" />
             </a>
           </div>
         </div>
