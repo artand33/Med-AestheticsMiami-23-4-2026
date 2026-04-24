@@ -1,6 +1,5 @@
 import { useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { BookingProvider, BookButton, useBooking } from "@/components/BookingDialog";
+import { BookButton, useBooking } from "@/components/BookingDialog";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -92,90 +91,70 @@ const TRANSFORMATION_FILTERS = ["Injectables", "Face", "Body", "Skin"] as const;
 const TRANSFORMATIONS: Record<(typeof TRANSFORMATION_FILTERS)[number], { before: string; after: string; label: string }[]> = {
   Injectables: [
     {
-      before: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=900&q=80&auto=format&fit=crop",
-      after: "https://images.unsplash.com/photo-1612277795421-9bc7706a4a41?w=900&q=80&auto=format&fit=crop",
+      before: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=700",
+      after: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=700",
       label: "Lip Balance + Midface Support",
     },
     {
-      before: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=900&q=80&auto=format&fit=crop",
-      after: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=900&q=80&auto=format&fit=crop",
+      before: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=700",
+      after: "https://images.unsplash.com/photo-1498842812179-c81beecf902a?w=700",
       label: "Jawline Contour Protocol",
     },
     {
-      before: "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=900&q=80&auto=format&fit=crop",
-      after: "https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?w=900&q=80&auto=format&fit=crop",
+      before: "https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=700",
+      after: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=700",
       label: "Perioral Volume Rebalancing",
-    },
-    {
-      before: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=900&q=80&auto=format&fit=crop",
-      after: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=900&q=80&auto=format&fit=crop",
-      label: "Smile Line Softening",
     },
   ],
   Face: [
     {
-      before: "https://images.unsplash.com/photo-1614108557772-66f55a275d11?w=900&q=80&auto=format&fit=crop",
-      after: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=900&q=80&auto=format&fit=crop",
+      before: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=700",
+      after: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=700",
       label: "Morpheus8 Texture Refinement",
     },
     {
-      before: "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=900&q=80&auto=format&fit=crop",
-      after: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=900&q=80&auto=format&fit=crop",
+      before: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=700",
+      after: "https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=700",
       label: "Tone + Elasticity Renewal",
     },
     {
-      before: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=900&q=80&auto=format&fit=crop",
-      after: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=900&q=80&auto=format&fit=crop",
+      before: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=700",
+      after: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=700",
       label: "Contour Lift Sequence",
-    },
-    {
-      before: "https://images.unsplash.com/photo-1463770770528-7aa57e9f9118?w=900&q=80&auto=format&fit=crop",
-      after: "https://images.unsplash.com/photo-1612277795421-9bc7706a4a41?w=900&q=80&auto=format&fit=crop",
-      label: "Fine-Line Densification",
     },
   ],
   Body: [
     {
-      before: "https://images.unsplash.com/photo-1532926381893-7542290edf1d?w=900&q=80&auto=format&fit=crop",
-      after: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=900&q=80&auto=format&fit=crop",
+      before: "https://images.unsplash.com/photo-1549060279-7e168fcee0c2?w=700",
+      after: "https://images.unsplash.com/photo-1607779097040-26e80aa78e66?w=700",
       label: "Venus Bliss Sculpt Series",
     },
     {
-      before: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=900&q=80&auto=format&fit=crop",
-      after: "https://images.unsplash.com/photo-1604506862775-28435553f6cd?w=900&q=80&auto=format&fit=crop",
+      before: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=700",
+      after: "https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=700",
       label: "Waistline Definition Cycle",
     },
     {
-      before: "https://images.unsplash.com/photo-1616279967983-ec413476e824?w=900&q=80&auto=format&fit=crop",
-      after: "https://images.unsplash.com/photo-1534367610401-9f5ed68180aa?w=900&q=80&auto=format&fit=crop",
+      before: "https://images.unsplash.com/photo-1607779097040-26e80aa78e66?w=700",
+      after: "https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=700",
       label: "Abdominal Sculpt Protocol",
-    },
-    {
-      before: "https://images.unsplash.com/photo-1552693673-1bf958298935?w=900&q=80&auto=format&fit=crop",
-      after: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=900&q=80&auto=format&fit=crop",
-      label: "Lower Body Refinement",
     },
   ],
   Skin: [
     {
-      before: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=900&q=80&auto=format&fit=crop",
-      after: "https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?w=900&q=80&auto=format&fit=crop",
+      before: "https://images.unsplash.com/photo-1583241475880-083f84372725?w=700",
+      after: "https://images.unsplash.com/photo-1606902965551-dce093cda6e7?w=700",
       label: "Aerolase Clarity Protocol",
     },
     {
-      before: "https://images.unsplash.com/photo-1463770770528-7aa57e9f9118?w=900&q=80&auto=format&fit=crop",
-      after: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=900&q=80&auto=format&fit=crop",
+      before: "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=700",
+      after: "https://images.unsplash.com/photo-1526045612212-70caf35c14df?w=700",
       label: "Pigment Harmony Program",
     },
     {
-      before: "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=900&q=80&auto=format&fit=crop",
-      after: "https://images.unsplash.com/photo-1614108557772-66f55a275d11?w=900&q=80&auto=format&fit=crop",
+      before: "https://images.unsplash.com/photo-1606902965551-dce093cda6e7?w=700",
+      after: "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=700",
       label: "Clarity + Pore Reduction",
-    },
-    {
-      before: "https://images.unsplash.com/photo-1614608682850-e0d6ed316d47?w=900&q=80&auto=format&fit=crop",
-      after: "https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?w=900&q=80&auto=format&fit=crop",
-      label: "Texture Recovery Plan",
     },
   ],
 };
@@ -352,9 +331,9 @@ function Services() {
                   <span className="text-[#0F0F0F]/55">Starting from </span>
                   <span className="font-medium text-[#C5A059]">{s.startingPrice}</span>
                 </p>
-                <Link to={`/treatments/${s.slug}`} className="text-sm text-[#0F0F0F]/60 transition-colors hover:text-[#C5A059]">
+                <a href="#contact" className="text-sm text-[#0F0F0F]/60 transition-colors hover:text-[#C5A059]">
                   Learn more →
-                </Link>
+                </a>
             </article>
           ))}
         </div>
@@ -365,7 +344,7 @@ function Services() {
 
 function WhyUs() {
   return (
-    <section id="why" className="py-20 md:py-24 bg-transparent">
+    <section id="why-us" className="py-20 md:py-24 bg-transparent">
       <div className="container">
         <SectionTitle eyebrow="Why Us" title="A Clinic, Not a Spa." />
         <motion.div
@@ -394,7 +373,7 @@ function WhyUs() {
 
 function Trust() {
   return (
-    <section className="py-20 md:py-24 bg-transparent">
+    <section id="about" className="py-20 md:py-24 bg-transparent">
       <div className="container grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         <motion.div
           initial={{ opacity: 0, y: 35 }}
@@ -421,6 +400,12 @@ function Trust() {
           <h2 className="font-serif text-3xl md:text-5xl leading-tight mb-6">A sanctuary of clinical precision across Miami.</h2>
           <p className="text-[#0F0F0F]/70 font-light mb-8 leading-relaxed">
             Led by our board-certified medical director, our practice is built on the belief that beauty and medicine belong together — practiced with restraint, science, and an unwavering eye for the individual.
+          </p>
+          <p className="text-[#0F0F0F]/70 font-light mb-4 leading-relaxed">
+            Every client journey starts with listening first: your concerns, your goals, your pace. We shape each roadmap to be clinically responsible and naturally flattering, not trend-driven.
+          </p>
+          <p className="text-[#0F0F0F]/70 font-light mb-8 leading-relaxed">
+            This section is intentionally kept editable as placeholder brand copy, so your team can refine voice, credentials, and positioning without changing the site structure.
           </p>
           <div className="flex items-center gap-5 mb-8 p-5 border border-[#E7E2D9] bg-[#FFFFFF]/60 rounded-2xl backdrop-blur-xl">
             <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 bg-muted">
@@ -475,23 +460,17 @@ function MirrorSlider({ before, after, label }: { before: string; after: string;
   return (
     <div className="space-y-2">
       <div
-        className="relative aspect-[4/5] overflow-hidden rounded-xl border border-[#FFFFFF]/50 bg-black"
-        onMouseLeave={() => {
-          if (!isMobile) setPosition(50);
-        }}
+        className="relative h-96 overflow-hidden rounded-xl border border-[#FFFFFF]/50 bg-black md:h-[28rem]"
         onMouseMove={(event) => {
           if (!isMobile) updatePosition(event.clientX, event.currentTarget);
-        }}
-        onTouchStart={(event) => {
-          if (isMobile) updatePosition(event.touches[0].clientX, event.currentTarget);
         }}
         onTouchMove={(event) => {
           if (isMobile) updatePosition(event.touches[0].clientX, event.currentTarget);
         }}
       >
-        <img src={before} alt={`Before result for ${label}`} className="h-full w-full object-cover" loading="lazy" />
+        <img src={before} alt="" className="h-full w-full object-cover" loading="lazy" />
         <motion.div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }} transition={{ duration: 0.15, ease: "easeOut" }}>
-          <img src={after} alt={`After result for ${label}`} className="h-full w-full object-cover" loading="lazy" />
+          <img src={after} alt="" className="h-full w-full object-cover" loading="lazy" />
         </motion.div>
         <motion.div
           animate={{ left: `${position}%` }}
@@ -539,7 +518,7 @@ function SocialProof() {
           variants={staggerContainer}
           initial="hidden"
           animate="visible"
-          className="mx-auto mb-14 grid w-full max-w-3xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          className="mx-auto mb-14 grid w-full max-w-4xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
         >
           {activePairs.map((pair) => (
             <motion.figure key={pair.label} variants={staggerItem}>
@@ -703,6 +682,61 @@ function FinalCTA() {
   );
 }
 
+function MembershipSection() {
+  return (
+    <section id="membership" className="py-20 md:py-24 bg-[#F5F0E8]/50 border-y border-[#C5A059]/20">
+      <div className="container max-w-4xl">
+        <SectionTitle
+          eyebrow="Membership"
+          title="Care That Grows With You."
+          intro="A simple placeholder for a future membership program with recurring support and elevated benefits."
+        />
+        <div className="space-y-5 text-[#0F0F0F]/75 font-light leading-relaxed">
+          <p>
+            Membership clients can receive routine treatment planning, priority scheduling windows, and curated maintenance recommendations based on seasonal skin and lifestyle changes.
+          </p>
+          <p>
+            Program details may include preferred pricing, bundled service credits, and quarterly check-ins designed to keep your long-term transformation roadmap consistent and measurable.
+          </p>
+          <p>
+            Final tiers, terms, and inclusions can be updated later; this section keeps the one-page navigation complete and gives your team a live area for future copy refinements.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ContactSection() {
+  return (
+    <section id="contact" className="py-20 md:py-24 bg-transparent">
+      <div className="container max-w-4xl">
+        <SectionTitle
+          eyebrow="Contact"
+          title="Start With a Consultation."
+          intro="This placeholder contact section supports anchor navigation and can be replaced with finalized contact details anytime."
+        />
+        <div className="space-y-5 text-[#0F0F0F]/75 font-light leading-relaxed">
+          <p>
+            Reach out for treatment guidance, scheduling support, or questions about which protocol best aligns with your goals and timeline.
+          </p>
+          <p>
+            Our team can help you compare options across skin, contouring, injectables, and wellness pathways, then suggest a practical first step based on your priorities.
+          </p>
+          <p>
+            Use the consultation button below to open the booking form and submit your preferred location and availability.
+          </p>
+        </div>
+        <div className="mt-8">
+          <BookButton className="h-11 px-8 bg-[#C5A059] hover:bg-[#C5A059]/90 text-[#0F0F0F]">
+            Book Consultation
+          </BookButton>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function MobileBookingBar() {
   return (
     <div className="fixed bottom-0 inset-x-0 z-50 border-t border-[#F9F9F7]/15 bg-[#0F0F0F]/85 backdrop-blur-xl md:hidden">
@@ -717,37 +751,37 @@ function MobileBookingBar() {
 
 const Index = () => {
   return (
-    <BookingProvider>
-      <div className="relative min-h-screen bg-[#F9F9F7] text-[#0F0F0F]">
-        <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
-          <div className="absolute inset-0 bg-[#F9F9F7]" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_15%,rgba(197,160,89,0.14),transparent_42%),radial-gradient(circle_at_78%_12%,rgba(15,15,15,0.05),transparent_34%),radial-gradient(circle_at_50%_88%,rgba(197,160,89,0.09),transparent_40%)]" />
-          <motion.div
-            className="absolute -left-24 top-24 h-[26rem] w-[26rem] rounded-full bg-[radial-gradient(circle,rgba(197,160,89,0.16)_0%,rgba(197,160,89,0)_72%)] blur-3xl"
-            animate={{ x: [0, 42, 0], y: [0, -24, 0] }}
-            transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            className="absolute -right-28 bottom-12 h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,rgba(15,15,15,0.08)_0%,rgba(15,15,15,0)_74%)] blur-3xl"
-            animate={{ x: [0, -36, 0], y: [0, 26, 0] }}
-            transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </div>
-        <main className="pb-20 md:pb-0">
-          <Hero />
-          <TrustSignals />
-          <Services />
-          <WhyUs />
-          <Trust />
-          <SocialProof />
-          <Journey />
-          <FAQ />
-          <Locations />
-          <FinalCTA />
-        </main>
-        <MobileBookingBar />
+    <div className="relative min-h-screen bg-[#F9F9F7] text-[#0F0F0F]">
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute inset-0 bg-[#F9F9F7]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_15%,rgba(197,160,89,0.14),transparent_42%),radial-gradient(circle_at_78%_12%,rgba(15,15,15,0.05),transparent_34%),radial-gradient(circle_at_50%_88%,rgba(197,160,89,0.09),transparent_40%)]" />
+        <motion.div
+          className="absolute -left-24 top-24 h-[26rem] w-[26rem] rounded-full bg-[radial-gradient(circle,rgba(197,160,89,0.16)_0%,rgba(197,160,89,0)_72%)] blur-3xl"
+          animate={{ x: [0, 42, 0], y: [0, -24, 0] }}
+          transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute -right-28 bottom-12 h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,rgba(15,15,15,0.08)_0%,rgba(15,15,15,0)_74%)] blur-3xl"
+          animate={{ x: [0, -36, 0], y: [0, 26, 0] }}
+          transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
+        />
       </div>
-    </BookingProvider>
+      <main className="pb-20 md:pb-0">
+        <Hero />
+        <TrustSignals />
+        <Services />
+        <WhyUs />
+        <Trust />
+        <SocialProof />
+        <Journey />
+        <MembershipSection />
+        <FAQ />
+        <Locations />
+        <ContactSection />
+        <FinalCTA />
+      </main>
+      <MobileBookingBar />
+    </div>
   );
 };
 

@@ -1,51 +1,19 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { treatments } from "@/lib/treatments";
+import { useBooking } from "@/components/BookingDialog";
 
 const PRIMARY_NAV = [
-  { label: "Locations", to: "/#locations" },
-  { label: "About", to: "/about" },
-  { label: "Membership", to: "/membership" },
-  { label: "Contact", to: "/contact" },
+  { label: "Why Us", to: "#why-us" },
+  { label: "Transformations", to: "#transformations" },
+  { label: "Locations", to: "#locations" },
+  { label: "About", to: "#about" },
+  { label: "Membership", to: "#membership" },
+  { label: "FAQ", to: "#faq" },
+  { label: "Contact", to: "#contact" },
 ];
 
-const treatmentCategories = treatments.map((treatment) => ({
-  label: treatment.category,
-  to: `/treatments/${treatment.slug}`,
-}));
-
-function NavItem({ to, label, onClick }: { to: string; label: string; onClick?: () => void }) {
-  const isHashHomeLink = to.startsWith("/#");
-
-  if (isHashHomeLink) {
-    return (
-      <a
-        href={to}
-        onClick={onClick}
-        className="text-sm font-medium text-[#0F0F0F]/70 transition-colors hover:text-[#C5A059]"
-      >
-        {label}
-      </a>
-    );
-  }
-
-  return (
-    <NavLink
-      to={to}
-      onClick={onClick}
-      className={({ isActive }) =>
-        `text-sm font-medium transition-colors ${
-          isActive ? "text-[#C5A059]" : "text-[#0F0F0F]/70 hover:text-[#C5A059]"
-        }`
-      }
-    >
-      {label}
-    </NavLink>
-  );
-}
-
 const Header = () => {
+  const { open } = useBooking();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [treatmentsOpen, setTreatmentsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -71,44 +39,45 @@ const Header = () => {
       }`}
     >
       <div className="container flex h-16 items-center justify-between gap-4">
-        <Link to="/" className="font-serif text-xl tracking-wide text-[#0F0F0F]">
+        <a href="#top" className="font-serif text-xl tracking-wide text-[#0F0F0F]">
           Med Aesthetics <span className="text-[#C5A059]">Miami</span>
-        </Link>
+        </a>
 
         <nav className="hidden items-center gap-8 md:flex">
           <div className="group relative">
-            <button
-              type="button"
+            <a
+              href="#treatments"
               className="inline-flex items-center gap-1 text-sm font-medium text-[#0F0F0F]/70 transition-colors hover:text-[#C5A059]"
             >
               Treatments
               <ChevronDown className="h-4 w-4" />
-            </button>
+            </a>
             <div className="invisible absolute left-0 top-full z-30 mt-3 w-72 translate-y-1 rounded-xl border border-[#E7E2D9] bg-white p-3 opacity-0 shadow-lg transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
-              {treatmentCategories.map((category) => (
-                <Link
-                  key={category.label}
-                  to={category.to}
-                  className="block rounded-lg px-3 py-2 text-sm text-[#0F0F0F]/75 transition-colors hover:bg-[#F5F0E8] hover:text-[#0F0F0F]"
-                >
-                  {category.label}
-                </Link>
-              ))}
+              <a href="#treatments" className="block rounded-lg px-3 py-2 text-sm text-[#0F0F0F]/75 transition-colors hover:bg-[#F5F0E8] hover:text-[#0F0F0F]">All Treatments</a>
+              <a href="#journey" className="block rounded-lg px-3 py-2 text-sm text-[#0F0F0F]/75 transition-colors hover:bg-[#F5F0E8] hover:text-[#0F0F0F]">Your Journey</a>
+              <a href="#contact" className="block rounded-lg px-3 py-2 text-sm text-[#0F0F0F]/75 transition-colors hover:bg-[#F5F0E8] hover:text-[#0F0F0F]">Book Consultation</a>
             </div>
           </div>
 
           {PRIMARY_NAV.map((item) => (
-            <NavItem key={item.label} to={item.to} label={item.label} />
+            <a
+              key={item.label}
+              href={item.to}
+              className="text-sm font-medium text-[#0F0F0F]/70 transition-colors hover:text-[#C5A059]"
+            >
+              {item.label}
+            </a>
           ))}
         </nav>
 
         <div className="hidden md:block">
-          <Link
-            to="/contact"
+          <button
+            type="button"
+            onClick={() => open()}
             className="inline-flex h-10 items-center rounded-md bg-[#C5A059] px-5 text-sm font-medium text-[#0F0F0F] transition-colors hover:bg-[#b8944d]"
           >
             Book Consultation
-          </Link>
+          </button>
         </div>
 
         <button
@@ -137,9 +106,9 @@ const Header = () => {
           }`}
         >
           <div className="mb-8 flex items-center justify-between">
-            <Link to="/" onClick={() => setDrawerOpen(false)} className="font-serif text-xl text-[#0F0F0F]">
+            <a href="#top" onClick={() => setDrawerOpen(false)} className="font-serif text-xl text-[#0F0F0F]">
               Med Aesthetics <span className="text-[#C5A059]">Miami</span>
-            </Link>
+            </a>
             <button
               type="button"
               className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-[#E7E2D9] text-[#0F0F0F]"
@@ -161,34 +130,41 @@ const Header = () => {
             </button>
             {treatmentsOpen && (
               <ul className="space-y-2 pl-3">
-                {treatmentCategories.map((category) => (
-                  <li key={category.label}>
-                    <Link
-                      to={category.to}
-                      onClick={() => setDrawerOpen(false)}
-                      className="block py-1 text-sm text-[#0F0F0F]/75 transition-colors hover:text-[#C5A059]"
-                    >
-                      {category.label}
-                    </Link>
-                  </li>
-                ))}
+                <li>
+                  <a href="#treatments" onClick={() => setDrawerOpen(false)} className="block py-1 text-sm text-[#0F0F0F]/75 transition-colors hover:text-[#C5A059]">All Treatments</a>
+                </li>
+                <li>
+                  <a href="#journey" onClick={() => setDrawerOpen(false)} className="block py-1 text-sm text-[#0F0F0F]/75 transition-colors hover:text-[#C5A059]">Your Journey</a>
+                </li>
+                <li>
+                  <a href="#contact" onClick={() => setDrawerOpen(false)} className="block py-1 text-sm text-[#0F0F0F]/75 transition-colors hover:text-[#C5A059]">Book Consultation</a>
+                </li>
               </ul>
             )}
 
             {PRIMARY_NAV.map((item) => (
               <div key={item.label} className="border-b border-[#E7E2D9] py-3">
-                <NavItem to={item.to} label={item.label} onClick={() => setDrawerOpen(false)} />
+                <a
+                  href={item.to}
+                  onClick={() => setDrawerOpen(false)}
+                  className="text-sm font-medium text-[#0F0F0F]/70 transition-colors hover:text-[#C5A059]"
+                >
+                  {item.label}
+                </a>
               </div>
             ))}
           </div>
 
-          <Link
-            to="/contact"
-            onClick={() => setDrawerOpen(false)}
+          <button
+            type="button"
+            onClick={() => {
+              setDrawerOpen(false);
+              open();
+            }}
             className="mt-8 inline-flex h-11 w-full items-center justify-center rounded-md bg-[#C5A059] px-5 text-sm font-medium text-[#0F0F0F] transition-colors hover:bg-[#b8944d]"
           >
             Book Consultation
-          </Link>
+          </button>
         </aside>
       </div>
     </header>
