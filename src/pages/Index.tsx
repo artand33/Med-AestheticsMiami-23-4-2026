@@ -6,7 +6,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useReveal } from "@/hooks/useReveal";
 import { locations } from "@/lib/locations";
 import { SERVICES, type ServiceCategory } from "@/lib/services";
-import { ShieldCheck, Sparkles, HeartHandshake, MapPin, Phone } from "lucide-react";
+import { ShieldCheck, Sparkles, HeartHandshake, MapPin, Phone, Star } from "lucide-react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 
 const PILLARS = [
@@ -29,10 +29,47 @@ const MEDICAL_AFFILIATIONS = [
   "Licensed in Florida",
 ];
 
-const TESTIMONIALS = [
-  { quote: "From the first consultation, it felt like a true partnership. The roadmap was personal — and the results, life-changing.", name: "A.M.", tag: "Morpheus8 Journey" },
-  { quote: "I've never been treated with this level of care and precision. My skin and confidence have never looked better.", name: "J.R.", tag: "Body Contouring" },
-  { quote: "Finally a clinic that understands my skin tone and treats it with the expertise it deserves.", name: "S.K.", tag: "Aerolase Protocol" },
+const TESTIMONIALS: {
+  name: string;
+  rating: number;
+  treatment: string;
+  quote: string;
+}[] = [
+  {
+    name: "Jessica M.",
+    rating: 5,
+    treatment: "Morpheus8 Journey",
+    quote:
+      "The Morpheus8 journey completely transformed my skin texture and confidence. My cheeks feel noticeably firmer and my fine lines have softened beautifully. The team walked me through every step with genuine, unhurried care.",
+  },
+  {
+    name: "David R.",
+    rating: 5,
+    treatment: "Venus Bliss Body Contouring",
+    quote:
+      "After three Venus Bliss sessions, my midsection looks more sculpted than it has in years. There was no downtime, and the results kept improving month after month. Easily the best investment I've made for myself.",
+  },
+  {
+    name: "Sofia K.",
+    rating: 5,
+    treatment: "Aerolase Neo Protocol",
+    quote:
+      "I was finally treated by a clinic that truly understood my skin tone. The Aerolase sessions cleared my post-acne marks without a single flare, and my complexion now looks even and luminous. I wish I had found them sooner.",
+  },
+  {
+    name: "Amanda P.",
+    rating: 5,
+    treatment: "Lip + Midface Filler",
+    quote:
+      "Subtle, elegant, and exactly what I asked for — nothing overdone. The balance they restored around my mouth and cheeks makes me look refreshed rather than filled. My friends keep asking what changed without being able to place it.",
+  },
+  {
+    name: "Marcus T.",
+    rating: 5,
+    treatment: "IV Wellness + Skin Program",
+    quote:
+      "The deep analysis during my consultation was unlike anything I'd experienced elsewhere. They built a wellness and skin protocol around my actual labs and lifestyle, not a template. Six months in, my energy and skin are both at an all-time best.",
+  },
 ];
 
 const FAQS = [
@@ -365,6 +402,82 @@ function WhyUs() {
   );
 }
 
+const MEDICAL_DIRECTOR_CERTIFICATIONS = [
+  "Board-Certified Dermatologist",
+  "Fellow, American Academy of Dermatology",
+  "American Society for Dermatologic Surgery",
+  "Advanced Injectables Certified",
+  "Inclusive Dermatology — All Skin Types",
+];
+
+function MedicalDirector() {
+  return (
+    <section id="medical-director" className="py-20 md:py-24 bg-cream texture-grain">
+      <div className="container relative z-10 grid gap-12 lg:grid-cols-5 lg:gap-16 items-center">
+        <div className="lg:col-span-3">
+          <SectionTitle
+            eyebrow="Medical Director"
+            title="Meet Dr. Elena Moreno, MD."
+            intro="Board-certified dermatologist leading every protocol, every roadmap, every result."
+          />
+          <RevealItem delay={80}>
+            <p className="text-ink/75 font-light leading-relaxed text-lg mb-8">
+              With over a decade of clinical experience in dermatology and aesthetic medicine,
+              Dr. Moreno brings a meticulous, anatomy-first approach to every treatment plan.
+              Her philosophy centers on restraint over trend — enhancing features in ways that
+              remain unmistakably you, with protocols validated for every Fitzpatrick skin type.
+              Each consultation begins with listening, because the most elegant results come from
+              understanding the person first, and the procedure second.
+            </p>
+          </RevealItem>
+          <RevealItem delay={160}>
+            <p className="uppercase tracking-[0.28em] text-[10px] text-ink/55 mb-4">
+              Credentials & Certifications
+            </p>
+            <ul className="flex flex-wrap gap-2">
+              {MEDICAL_DIRECTOR_CERTIFICATIONS.map((credential) => (
+                <li
+                  key={credential}
+                  className="rounded-full border border-gold/45 bg-white/65 px-4 py-2 text-[10px] uppercase tracking-[0.2em] text-ink/70"
+                >
+                  {credential}
+                </li>
+              ))}
+            </ul>
+          </RevealItem>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 35 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="relative lg:col-span-2"
+        >
+          <div className="aspect-[4/5] overflow-hidden rounded-2xl border border-gold/25 shadow-[0_20px_60px_rgba(15,15,15,0.12)]">
+            <img
+              src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=900&q=80&auto=format&fit=crop"
+              srcSet="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=600&q=80&auto=format&fit=crop 600w,
+                      https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=900&q=80&auto=format&fit=crop 900w,
+                      https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=1200&q=80&auto=format&fit=crop 1200w"
+              sizes="(min-width: 1024px) 34vw, 100vw"
+              alt="Portrait of our medical director — a board-certified dermatologist in a clinical setting"
+              loading="lazy"
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <div className="absolute -bottom-4 -left-4 md:-left-6 rounded-xl border border-gold/30 bg-white/90 px-5 py-3 shadow-[0_8px_30px_rgba(15,15,15,0.1)] backdrop-blur">
+            <p className="font-serif text-base text-ink">Dr. Elena Moreno, MD</p>
+            <p className="mt-0.5 text-[10px] uppercase tracking-[0.22em] text-gold">
+              Medical Director · FAAD
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
 function Trust() {
   return (
     <section id="about" className="py-20 md:py-24 bg-stone-warm">
@@ -517,7 +630,7 @@ function SocialProof() {
         </div>
         <div
           key={activeFilter}
-          className="mx-auto mb-14 grid w-full max-w-4xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
+          className="mx-auto grid w-full max-w-4xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
         >
           {activePairs.map((pair, index) => (
             <RevealItem key={`${activeFilter}-${pair.label}`} delay={index * 100}>
@@ -527,26 +640,85 @@ function SocialProof() {
             </RevealItem>
           ))}
         </div>
+      </div>
+    </section>
+  );
+}
+
+function StarRating({ rating }: { rating: number }) {
+  return (
+    <div className="flex items-center gap-1 text-gold" aria-label={`${rating} out of 5 stars`}>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star
+          key={i}
+          className={`h-4 w-4 ${i < rating ? "fill-gold" : "fill-transparent"}`}
+          strokeWidth={i < rating ? 0 : 1.25}
+          aria-hidden
+        />
+      ))}
+    </div>
+  );
+}
+
+function TestimonialCard({ testimonial }: { testimonial: (typeof TESTIMONIALS)[number] }) {
+  return (
+    <article className="premium-card premium-card-soft flex h-full flex-col rounded-2xl border border-gold/25 bg-white/70 p-7 backdrop-blur-xl shadow-[0_10px_40px_rgba(15,15,15,0.06)]">
+      <StarRating rating={testimonial.rating} />
+      <p className="mt-5 flex-1 font-serif text-lg italic leading-relaxed text-ink/85">
+        “{testimonial.quote}”
+      </p>
+      <footer className="mt-6 border-t border-gold/25 pt-4">
+        <p className="font-medium tracking-wide text-ink">— {testimonial.name}</p>
+        <p className="mt-1 text-[11px] uppercase tracking-[0.24em] text-gold">
+          {testimonial.treatment}
+        </p>
+      </footer>
+    </article>
+  );
+}
+
+function Testimonials() {
+  return (
+    <section id="testimonials" className="py-20 md:py-24 bg-ivory">
+      <div className="container">
+        <SectionTitle
+          eyebrow="Testimonials"
+          title="Words From Our Patients."
+          intro="Real stories from the people who trusted us with their transformation."
+        />
+
+        <div className="md:hidden">
+          <div
+            className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-6 [&::-webkit-scrollbar]:hidden"
+            style={{ scrollbarWidth: "none" }}
+            role="region"
+            aria-label="Patient testimonials"
+          >
+            {TESTIMONIALS.map((t) => (
+              <div
+                key={t.name}
+                className="flex snap-center shrink-0 basis-[85%] first:ml-0"
+              >
+                <TestimonialCard testimonial={t} />
+              </div>
+            ))}
+          </div>
+          <p className="mt-1 text-center text-[10px] uppercase tracking-[0.28em] text-ink/45">
+            Swipe for more →
+          </p>
+        </div>
 
         <motion.div
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.25 }}
-          className="grid md:grid-cols-3 gap-5"
+          viewport={{ once: true, amount: 0.15 }}
+          className="hidden md:grid md:grid-cols-3 md:gap-6"
         >
           {TESTIMONIALS.map((t) => (
-            <motion.blockquote
-              variants={staggerItem}
-              key={t.name}
-              className="border border-white/45 bg-white/40 backdrop-blur-xl p-8 rounded-2xl"
-            >
-              <p className="font-serif text-xl italic leading-relaxed mb-6">“{t.quote}”</p>
-              <footer className="flex items-center justify-between text-sm">
-                <span className="font-medium tracking-wide">— {t.name}</span>
-                <span className="text-gold text-xs uppercase tracking-[0.2em]">{t.tag}</span>
-              </footer>
-            </motion.blockquote>
+            <motion.div variants={staggerItem} key={t.name} className="flex">
+              <TestimonialCard testimonial={t} />
+            </motion.div>
           ))}
         </motion.div>
       </div>
@@ -812,8 +984,10 @@ const Index = () => {
         <SectionHairline />
         <Services />
         <WhyUs />
+        <MedicalDirector />
         <SectionHairline />
         <SocialProof />
+        <Testimonials />
         <Journey />
         <SectionHairline />
         <Locations />
