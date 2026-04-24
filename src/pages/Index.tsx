@@ -1,8 +1,9 @@
-import { useMemo, useRef, useState } from "react";
+import { type ReactNode, useMemo, useRef, useState } from "react";
 import { BookButton, useBooking } from "@/components/BookingDialog";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useReveal } from "@/hooks/useReveal";
 import { locations } from "@/lib/locations";
 import { ShieldCheck, Sparkles, HeartHandshake, MapPin, Phone } from "lucide-react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
@@ -71,7 +72,12 @@ const TRUST_STATS = [
   { value: "3", label: "Miami Locations" },
 ];
 
-const PRESS_LOGOS = ["Logo", "Logo", "Logo", "Logo", "Logo"];
+const MEDICAL_AFFILIATIONS = [
+  "FDA-Cleared Technology",
+  "Board-Certified Medical Team",
+  "HIPAA Compliant",
+  "Licensed in Florida",
+];
 
 const TESTIMONIALS = [
   { quote: "From the first consultation, it felt like a true partnership. The roadmap was personal — and the results, life-changing.", name: "A.M.", tag: "Morpheus8 Journey" },
@@ -159,18 +165,6 @@ const TRANSFORMATIONS: Record<(typeof TRANSFORMATION_FILTERS)[number], { before:
   ],
 };
 
-const sectionReveal = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.7,
-      ease: [0.22, 1, 0.36, 1],
-    },
-  },
-};
-
 const staggerContainer = {
   hidden: {},
   visible: {
@@ -246,7 +240,7 @@ function TrustSignals() {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="w-full bg-[#F5F0E8] border-y border-[#C5A059]/20 py-12 md:py-14">
+    <section className="w-full bg-ivory border-y border-[#C5A059]/20 py-12 md:py-14">
       <motion.div
         initial={shouldReduceMotion ? false : { opacity: 0 }}
         whileInView={shouldReduceMotion ? undefined : { opacity: 1 }}
@@ -263,14 +257,14 @@ function TrustSignals() {
           ))}
         </div>
 
-        <div className="mt-10 flex items-center justify-between gap-3 md:gap-4">
-          {PRESS_LOGOS.map((logo, index) => (
-            <div
-              key={`${logo}-${index}`}
-              className="h-12 md:h-14 flex-1 rounded-md border border-[#0F0F0F]/14 bg-[#E7E2D9] text-[#0F0F0F]/45 text-xs uppercase tracking-[0.2em] flex items-center justify-center"
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+          {MEDICAL_AFFILIATIONS.map((item) => (
+            <span
+              key={item}
+              className="rounded-full border border-[#C5A059]/45 bg-[#FFFFFF]/65 px-4 py-2 text-[10px] uppercase tracking-[0.2em] text-[#0F0F0F]/70"
             >
-              {logo}
-            </div>
+              {item}
+            </span>
           ))}
         </div>
       </motion.div>
@@ -278,63 +272,107 @@ function TrustSignals() {
   );
 }
 
-function SectionTitle({ eyebrow, title, intro }: { eyebrow: string; title: string; intro?: string }) {
+function RevealItem({ children, delay = 0, className = "" }: { children: ReactNode; delay?: number; className?: string }) {
+  const { elementRef, isVisible, prefersReducedMotion } = useReveal<HTMLDivElement>();
+
   return (
-    <motion.div
-      variants={sectionReveal}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.35 }}
-      className="max-w-2xl mb-10 md:mb-12"
+    <div
+      ref={elementRef}
+      className={`reveal-item ${isVisible ? "is-visible" : ""} ${className}`.trim()}
+      style={prefersReducedMotion ? undefined : { transitionDelay: `${delay}ms` }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function SectionTitle({
+  eyebrow,
+  title,
+  intro,
+  titleClassName = "text-[#0F0F0F]",
+  introClassName = "text-[#0F0F0F]/70",
+}: {
+  eyebrow: string;
+  title: string;
+  intro?: string;
+  titleClassName?: string;
+  introClassName?: string;
+}) {
+  const { elementRef, isVisible, prefersReducedMotion } = useReveal<HTMLDivElement>({
+    threshold: 0.25,
+  });
+
+  return (
+    <div
+      ref={elementRef}
+      className={`reveal-item max-w-2xl mb-10 md:mb-12 ${isVisible ? "is-visible" : ""}`}
+      style={prefersReducedMotion ? undefined : { transitionDelay: "40ms" }}
     >
       <div className="h-px w-14 bg-[#C5A059] mb-6" />
-      <p className="uppercase tracking-[0.32em] text-xs text-[#C5A059] mb-4">{eyebrow}</p>
-      <h2 className="font-serif text-3xl md:text-5xl leading-tight mb-4 text-[#0F0F0F]">{title}</h2>
-      {intro && <p className="text-[#0F0F0F]/70 text-lg font-light">{intro}</p>}
-    </motion.div>
+      <div className="mb-4 inline-block bg-[radial-gradient(circle_at_center,hsl(var(--primary)/0.08),transparent_70%)] px-8 py-2">
+        <p className="uppercase tracking-[0.32em] text-xs text-[#C5A059]">{eyebrow}</p>
+      </div>
+      <h2 className={`font-serif text-3xl md:text-5xl leading-tight mb-4 ${titleClassName}`}>{title}</h2>
+      {intro && <p className={`text-lg font-light ${introClassName}`}>{intro}</p>}
+    </div>
+  );
+}
+
+function TreatmentCard({ service, index }: { service: (typeof SERVICES)[number]; index: number }) {
+  const { elementRef, isVisible, prefersReducedMotion } = useReveal<HTMLElement>({
+    threshold: 0.18,
+  });
+
+  return (
+    <article
+      ref={elementRef}
+      className={`reveal-item treatment-card rounded-2xl border border-stone-100 bg-white p-6 ${isVisible ? "is-visible" : ""}`}
+      style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 80}ms` }}
+    >
+      <div className="mb-4 flex items-center gap-3">
+        <img
+          src={service.img}
+          alt={`${service.title} category`}
+          loading="lazy"
+          className="h-12 w-12 rounded-xl object-cover ring-1 ring-[#C5A059]/35"
+        />
+        <span className="inline-block rounded-full text-[10px] uppercase tracking-[0.25em] text-[#C5A059] border border-[#C5A059]/40 px-3 py-1">
+          {service.tag}
+        </span>
+      </div>
+      <h3 className="font-serif text-2xl mb-3">{service.title}</h3>
+      <ul className="mb-4 space-y-1.5">
+        {service.treatments.map((treatment) => (
+          <li key={treatment} className="flex items-start gap-2 text-sm text-[#0F0F0F]/72 font-light">
+            <span className="mt-2 h-px w-2 bg-[#C5A059] flex-shrink-0" />
+            <span>{treatment}</span>
+          </li>
+        ))}
+      </ul>
+      <p className="mb-3 text-sm text-[#0F0F0F]/70">
+        <span className="text-[#0F0F0F]/55">Starting from </span>
+        <span className="font-medium text-[#C5A059]">{service.startingPrice}</span>
+      </p>
+      <a href="#contact" className="text-sm text-[#0F0F0F]/60 transition-colors hover:text-[#C5A059]">
+        Learn more →
+      </a>
+    </article>
   );
 }
 
 function Services() {
   return (
-    <section id="treatments" className="py-20 md:py-24 bg-[#F5F0E8]/45 border-y border-[#C5A059]/20">
-      <div className="container">
+    <section id="treatments" className="py-20 md:py-24 bg-cream texture-grain border-y border-[#C5A059]/20">
+      <div className="container relative z-10">
         <SectionTitle
           eyebrow="Treatments"
           title="Medical-Grade, Tailored to You."
           intro="From contouring and lasers to IV wellness and skin essentials, every category is protocolized to your anatomy and goals."
         />
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {SERVICES.map((s) => (
-            <article key={s.title} className="bg-white rounded-2xl p-6 shadow-sm border border-stone-100">
-                <div className="mb-4 flex items-center gap-3">
-                  <img
-                    src={s.img}
-                    alt={`${s.title} category`}
-                    loading="lazy"
-                    className="h-12 w-12 rounded-xl object-cover ring-1 ring-[#C5A059]/35"
-                  />
-                  <span className="inline-block rounded-full text-[10px] uppercase tracking-[0.25em] text-[#C5A059] border border-[#C5A059]/40 px-3 py-1">
-                    {s.tag}
-                  </span>
-                </div>
-                <h3 className="font-serif text-2xl mb-3">{s.title}</h3>
-                <ul className="mb-4 space-y-1.5">
-                  {s.treatments.map((treatment) => (
-                    <li key={treatment} className="flex items-start gap-2 text-sm text-[#0F0F0F]/72 font-light">
-                      <span className="mt-2 h-px w-2 bg-[#C5A059] flex-shrink-0" />
-                      <span>{treatment}</span>
-                    </li>
-                  ))}
-                </ul>
-                <p className="mb-3 text-sm text-[#0F0F0F]/70">
-                  <span className="text-[#0F0F0F]/55">Starting from </span>
-                  <span className="font-medium text-[#C5A059]">{s.startingPrice}</span>
-                </p>
-                <a href="#contact" className="text-sm text-[#0F0F0F]/60 transition-colors hover:text-[#C5A059]">
-                  Learn more →
-                </a>
-            </article>
+          {SERVICES.map((service, index) => (
+            <TreatmentCard key={service.slug} service={service} index={index} />
           ))}
         </div>
       </div>
@@ -344,7 +382,7 @@ function Services() {
 
 function WhyUs() {
   return (
-    <section id="why-us" className="py-20 md:py-24 bg-transparent">
+    <section id="why-us" className="py-20 md:py-24 bg-ivory">
       <div className="container">
         <SectionTitle eyebrow="Why Us" title="A Clinic, Not a Spa." />
         <motion.div
@@ -373,7 +411,7 @@ function WhyUs() {
 
 function Trust() {
   return (
-    <section id="about" className="py-20 md:py-24 bg-transparent">
+    <section id="about" className="py-20 md:py-24 bg-stone-warm">
       <div className="container grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         <motion.div
           initial={{ opacity: 0, y: 35 }}
@@ -389,14 +427,11 @@ function Trust() {
             className="w-full h-full object-cover"
           />
         </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: 35 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-        >
+        <RevealItem delay={80}>
           <div className="h-px w-14 bg-[#C5A059] mb-6" />
-          <p className="uppercase tracking-[0.32em] text-xs text-[#C5A059] mb-4">The Clinic</p>
+          <div className="mb-4 inline-block bg-[radial-gradient(circle_at_center,hsl(var(--primary)/0.08),transparent_70%)] px-8 py-2">
+            <p className="uppercase tracking-[0.32em] text-xs text-[#C5A059]">The Clinic</p>
+          </div>
           <h2 className="font-serif text-3xl md:text-5xl leading-tight mb-6">A sanctuary of clinical precision across Miami.</h2>
           <p className="text-[#0F0F0F]/70 font-light mb-8 leading-relaxed">
             Led by our board-certified medical director, our practice is built on the belief that beauty and medicine belong together — practiced with restraint, science, and an unwavering eye for the individual.
@@ -433,7 +468,7 @@ function Trust() {
               </li>
             ))}
           </ul>
-        </motion.div>
+        </RevealItem>
       </div>
     </section>
   );
@@ -477,10 +512,10 @@ function MirrorSlider({ before, after, label }: { before: string; after: string;
           transition={{ duration: 0.14, ease: "easeOut" }}
           className="pointer-events-none absolute inset-y-0 w-px bg-[#F9F9F7]/95 shadow-[0_0_10px_rgba(255,255,255,0.45)]"
         />
-        <span className="absolute left-4 top-4 text-[11px] uppercase tracking-[0.24em] text-[#F9F9F7] font-medium transition-opacity" style={{ opacity: beforeOpacity }}>
+        <span className="absolute left-4 top-4 text-[11px] uppercase tracking-[0.24em] text-[#0F0F0F]/85 font-medium transition-opacity" style={{ opacity: beforeOpacity }}>
           Before
         </span>
-        <span className="absolute right-4 top-4 text-[11px] uppercase tracking-[0.24em] text-[#F9F9F7] font-medium transition-opacity" style={{ opacity: afterOpacity }}>
+        <span className="absolute right-4 top-4 text-[11px] uppercase tracking-[0.24em] text-[#0F0F0F]/85 font-medium transition-opacity" style={{ opacity: afterOpacity }}>
           After
         </span>
       </div>
@@ -494,7 +529,7 @@ function SocialProof() {
   const activePairs = TRANSFORMATIONS[activeFilter];
 
   return (
-    <section id="transformations" className="py-20 md:py-24 bg-transparent">
+    <section id="transformations" className="py-20 md:py-24 bg-cream">
       <div className="container">
         <SectionTitle eyebrow="Results" title="Transformations, Documented." intro="Real outcomes from our journey-based protocols. Individual results vary." />
         <div className="mx-auto mb-8 flex w-full max-w-3xl flex-wrap gap-2">
@@ -513,19 +548,18 @@ function SocialProof() {
             </button>
           ))}
         </div>
-        <motion.div
+        <div
           key={activeFilter}
-          variants={staggerContainer}
-          initial="hidden"
-          animate="visible"
           className="mx-auto mb-14 grid w-full max-w-4xl grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {activePairs.map((pair) => (
-            <motion.figure key={pair.label} variants={staggerItem}>
-              <MirrorSlider before={pair.before} after={pair.after} label={pair.label} />
-            </motion.figure>
+          {activePairs.map((pair, index) => (
+            <RevealItem key={`${activeFilter}-${pair.label}`} delay={index * 100}>
+              <figure>
+                <MirrorSlider before={pair.before} after={pair.after} label={pair.label} />
+              </figure>
+            </RevealItem>
           ))}
-        </motion.div>
+        </div>
 
         <motion.div
           variants={staggerContainer}
@@ -560,31 +594,31 @@ function Journey() {
     { n: "03", title: "Sustainable Maintenance", desc: "Long-term skin health support and refinement, evolving as you do." },
   ];
   return (
-    <section id="journey" className="py-20 md:py-24 bg-transparent">
-      <div className="container">
-        <SectionTitle eyebrow="The Journey" title="A Roadmap, Not a Quick Fix." />
+    <section id="journey" className="py-20 md:py-24 bg-dark-warm">
+      <div className="container relative z-10">
+        <SectionTitle eyebrow="The Journey" title="A Roadmap, Not a Quick Fix." titleClassName="text-[#F9F9F7]" />
         <div className="grid md:grid-cols-3 gap-7 mb-12">
-          {steps.map((s) => (
-            <motion.div
-              key={s.n}
-              initial={{ opacity: 0, y: 26 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.35 }}
-              transition={{ duration: 0.6, delay: Number(s.n) * 0.08, ease: [0.22, 1, 0.36, 1] }}
-              className="border-t border-[#C5A059] pt-6"
-            >
-              <span className="font-serif text-5xl text-[#C5A059]">{s.n}</span>
-              <h3 className="font-serif text-2xl mt-3 mb-2">{s.title}</h3>
-              <p className="text-[#0F0F0F]/70 font-light leading-relaxed">{s.desc}</p>
-            </motion.div>
+          {steps.map((s, index) => (
+            <RevealItem key={s.n} delay={index * 150}>
+              <div className="relative border-t border-[#C5A059] pt-6 overflow-hidden">
+                <span className="pointer-events-none select-none absolute -top-2 right-2 font-serif text-[8rem] md:text-[9rem] leading-none text-[#D0AB63] opacity-5">
+                  {s.n}
+                </span>
+                <div className="relative z-10">
+                  <span className="font-serif text-5xl text-[#D0AB63]">{s.n}</span>
+                  <h3 className="font-serif text-2xl mt-3 mb-2 text-[#F9F9F7]">{s.title}</h3>
+                  <p className="text-[#F9F9F7]/75 font-light leading-relaxed">{s.desc}</p>
+                </div>
+              </div>
+            </RevealItem>
           ))}
         </div>
-        <div className="border-t border-[#0F0F0F]/12 pt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-sm">
-          <p className="flex items-center gap-2 text-foreground/80">
+        <div className="border-t border-[#C5A059]/30 pt-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4 text-sm">
+          <p className="flex items-center gap-2 text-[#F9F9F7]/75">
             <MapPin className="h-4 w-4 text-[#C5A059]" />
             Proudly serving Miami across three locations.
           </p>
-          <p className="text-[#0F0F0F]/55 italic">Comprehensive aftercare for sustained, long-term skin health.</p>
+          <p className="text-[#F9F9F7]/70 italic">Comprehensive aftercare for sustained, long-term skin health.</p>
         </div>
       </div>
     </section>
@@ -593,8 +627,8 @@ function Journey() {
 
 function FAQ() {
   return (
-    <section id="faq" className="py-20 md:py-24 bg-transparent">
-      <div className="container max-w-3xl">
+    <section id="faq" className="py-20 md:py-24 bg-cream texture-grain">
+      <div className="container relative z-10 max-w-3xl">
         <SectionTitle eyebrow="FAQ" title="Considered Answers." />
         <Accordion type="single" collapsible className="w-full">
           {FAQS.map((f, i) => (
@@ -615,7 +649,11 @@ function FAQ() {
 
 function Locations() {
   return (
-    <section id="locations" className="py-20 md:py-24 bg-transparent">
+    <section
+      id="locations"
+      className="py-20 md:py-24 bg-ivory"
+      style={{ backgroundImage: "radial-gradient(circle at 85% 15%, hsl(var(--primary) / 0.12), transparent 55%)" }}
+    >
       <div className="container">
         <SectionTitle
           eyebrow="Locations"
@@ -633,7 +671,7 @@ function Locations() {
             <motion.article
               key={location.name}
               variants={staggerItem}
-              className="rounded-2xl border border-[#FFFFFF]/45 bg-[#FFFFFF]/45 p-6 backdrop-blur-xl shadow-[0_10px_40px_rgba(15,15,15,0.08)]"
+              className="rounded-2xl border border-[#FFFFFF]/50 bg-white/60 p-6 backdrop-blur-md shadow-[0_10px_40px_rgba(15,15,15,0.08)]"
             >
               <p className="font-serif text-2xl mb-4">{location.name}</p>
               <ul className="space-y-3 text-sm font-light text-[#0F0F0F]/75 mb-6">
@@ -682,9 +720,18 @@ function FinalCTA() {
   );
 }
 
+function SectionHairline() {
+  return (
+    <div
+      aria-hidden
+      className="h-px max-w-32 mx-auto bg-[linear-gradient(90deg,transparent,hsl(var(--primary)/0.4),transparent)]"
+    />
+  );
+}
+
 function MembershipSection() {
   return (
-    <section id="membership" className="py-20 md:py-24 bg-[#F5F0E8]/50 border-y border-[#C5A059]/20">
+    <section id="membership" className="py-20 md:py-24 bg-gold-soft border-y border-[#C5A059]/25">
       <div className="container max-w-4xl">
         <SectionTitle
           eyebrow="Membership"
@@ -709,7 +756,7 @@ function MembershipSection() {
 
 function ContactSection() {
   return (
-    <section id="contact" className="py-20 md:py-24 bg-transparent">
+    <section id="contact" className="py-20 md:py-24 bg-ivory">
       <div className="container max-w-4xl">
         <SectionTitle
           eyebrow="Contact"
@@ -769,15 +816,19 @@ const Index = () => {
       <main className="pb-20 md:pb-0">
         <Hero />
         <TrustSignals />
+        <SectionHairline />
         <Services />
         <WhyUs />
-        <Trust />
+        <SectionHairline />
         <SocialProof />
         <Journey />
-        <MembershipSection />
-        <FAQ />
+        <SectionHairline />
         <Locations />
+        <Trust />
+        <SectionHairline />
+        <MembershipSection />
         <ContactSection />
+        <FAQ />
         <FinalCTA />
       </main>
       <MobileBookingBar />

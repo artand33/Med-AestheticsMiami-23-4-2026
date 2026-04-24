@@ -55,7 +55,13 @@ const Header = () => {
             <div className="invisible absolute left-0 top-full z-30 mt-3 w-72 translate-y-1 rounded-xl border border-[#E7E2D9] bg-white p-3 opacity-0 shadow-lg transition-all group-hover:visible group-hover:translate-y-0 group-hover:opacity-100">
               <a href="#treatments" className="block rounded-lg px-3 py-2 text-sm text-[#0F0F0F]/75 transition-colors hover:bg-[#F5F0E8] hover:text-[#0F0F0F]">All Treatments</a>
               <a href="#journey" className="block rounded-lg px-3 py-2 text-sm text-[#0F0F0F]/75 transition-colors hover:bg-[#F5F0E8] hover:text-[#0F0F0F]">Your Journey</a>
-              <a href="#contact" className="block rounded-lg px-3 py-2 text-sm text-[#0F0F0F]/75 transition-colors hover:bg-[#F5F0E8] hover:text-[#0F0F0F]">Book Consultation</a>
+              <button
+                type="button"
+                onClick={() => open()}
+                className="block w-full rounded-lg px-3 py-2 text-left text-sm text-[#0F0F0F]/75 transition-colors hover:bg-[#F5F0E8] hover:text-[#0F0F0F]"
+              >
+                Book Consultation
+              </button>
             </div>
           </div>
 
@@ -137,7 +143,16 @@ const Header = () => {
                   <a href="#journey" onClick={() => setDrawerOpen(false)} className="block py-1 text-sm text-[#0F0F0F]/75 transition-colors hover:text-[#C5A059]">Your Journey</a>
                 </li>
                 <li>
-                  <a href="#contact" onClick={() => setDrawerOpen(false)} className="block py-1 text-sm text-[#0F0F0F]/75 transition-colors hover:text-[#C5A059]">Book Consultation</a>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setDrawerOpen(false);
+                      open();
+                    }}
+                    className="block py-1 text-sm text-[#0F0F0F]/75 transition-colors hover:text-[#C5A059]"
+                  >
+                    Book Consultation
+                  </button>
                 </li>
               </ul>
             )}
