@@ -8,41 +8,40 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Luxury Clinical — Ivory base, charcoal ink, champagne gold accent */
-    --background: 40 33% 97%;        /* #FAF8F4 ivory */
-    --foreground: 220 15% 14%;       /* deep charcoal */
+    /* Luxury Clinical palette */
+    --background: 45 20% 97%;        /* #F9F9F7 Ivory */
+    --foreground: 0 0% 6%;           /* #0F0F0F Deep Ink */
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 15% 14%;
+    --card: 45 14% 99%;
+    --card-foreground: 0 0% 6%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 14%;
+    --popover: 45 14% 99%;
+    --popover-foreground: 0 0% 6%;
 
-    /* Champagne gold #C5A059 ≈ hsl(40, 49%, 56%) */
-    --primary: 40 49% 56%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 40 48% 56%;           /* #C5A059 Muted Gold */
+    --primary-foreground: 0 0% 6%;
 
-    --secondary: 40 25% 93%;
-    --secondary-foreground: 220 15% 14%;
+    --secondary: 45 17% 92%;
+    --secondary-foreground: 0 0% 6%;
 
-    --muted: 40 20% 94%;
-    --muted-foreground: 220 10% 40%;
+    --muted: 45 12% 94%;
+    --muted-foreground: 0 0% 36%;
 
-    --accent: 40 49% 56%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 40 48% 56%;
+    --accent-foreground: 0 0% 6%;
 
     --destructive: 0 70% 45%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 40 20% 88%;
-    --input: 40 20% 88%;
-    --ring: 40 49% 56%;
+    --border: 40 18% 84%;
+    --input: 40 18% 84%;
+    --ring: 40 48% 56%;
 
     --radius: 0.5rem;
 
-    --gold: 40 49% 56%;
-    --gold-soft: 40 40% 88%;
-    --ink: 220 15% 14%;
+    --gold: 40 48% 56%;
+    --gold-soft: 40 35% 86%;
+    --ink: 0 0% 6%;
 
     --sidebar-background: 0 0% 98%;
 
@@ -103,6 +102,10 @@ All colors MUST be HSL.
 @layer base {
   * {
     @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 
   body {

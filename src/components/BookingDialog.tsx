@@ -5,17 +5,25 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { locations } from "@/lib/locations";
 import { toast } from "sonner";
 import { CheckCircle2 } from "lucide-react";
 
-type Ctx = { open: () => void };
+type BookingOpenOptions = {
+  treatmentName?: string;
+};
+
+type Ctx = { open: (options?: BookingOpenOptions) => void };
 const BookingCtx = createContext<Ctx>({ open: () => {} });
 export const useBooking = () => useContext(BookingCtx);
 
 export function BookingProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [location, setLocation] = useState("");
   const [service, setService] = useState("");
+  const [treatmentName, setTreatmentName] = useState("");
+  const [submittedLocationName, setSubmittedLocationName] = useState("");
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -25,20 +33,46 @@ export function BookingProvider({ children }: { children: ReactNode }) {
     const name = (form.elements.namedItem("name") as HTMLInputElement).value.trim();
     const email = (form.elements.namedItem("email") as HTMLInputElement).value.trim();
     const phone = (form.elements.namedItem("phone") as HTMLInputElement).value.trim();
-    if (!name || !email || !phone) {
-      toast.error("Please complete name, email and phone.");
+    if (!location || !name || !email || !phone) {
+      toast.error("Please complete preferred location, name, email and phone.");
       return;
     }
+    const selectedLocation = locations.find((item) => item.id === location);
+    const submissionPayload = {
+      location,
+      locationName: selectedLocation?.name ?? "",
+      name,
+      email,
+      phone,
+      service,
+      treatmentName: treatmentName.trim(),
+      date: (form.elements.namedItem("date") as HTMLInputElement)?.value ?? "",
+      notes: (form.elements.namedItem("notes") as HTMLInputElement)?.value.trim() ?? "",
+    };
+    setSubmittedLocationName(submissionPayload.locationName);
     setSubmitted(true);
   };
 
   const reset = () => {
     setSubmitted(false);
+    setLocation("");
     setService("");
+    setTreatmentName("");
+    setSubmittedLocationName("");
   };
 
+  const selectedLocation = locations.find((item) => item.id === location);
+
   return (
-    <BookingCtx.Provider value={{ open: () => { reset(); setIsOpen(true); } }}>
+    <BookingCtx.Provider
+      value={{
+        open: (options?: BookingOpenOptions) => {
+          reset();
+          setTreatmentName(options?.treatmentName ?? "");
+          setIsOpen(true);
+        },
+      }}
+    >
       {children}
       <Dialog open={isOpen} onOpenChange={(v) => { setIsOpen(v); if (!v) reset(); }}>
         <DialogContent className="sm:max-w-lg bg-background">
@@ -53,6 +87,25 @@ export function BookingProvider({ children }: { children: ReactNode }) {
               <form onSubmit={onSubmit} className="space-y-4 mt-2">
                 {/* honeypot */}
                 <input type="text" name="company" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
+                <div className="space-y-1.5">
+                  <Label htmlFor="location">Preferred Location</Label>
+                  <Select value={location} onValueChange={setLocation}>
+                    <SelectTrigger id="location" aria-label="Preferred Location">
+                      <SelectValue placeholder="Select your preferred clinic" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {locations.map((item) => (
+                        <SelectItem key={item.id} value={item.id}>
+                          {item.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <input type="hidden" name="location" value={location} />
+                  {selectedLocation ? (
+                    <p className="text-xs text-muted-foreground">{selectedLocation.address} · {selectedLocation.phone}</p>
+                  ) : null}
+                </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <Label htmlFor="name">Full name</Label>
@@ -80,6 +133,17 @@ export function BookingProvider({ children }: { children: ReactNode }) {
                     </SelectContent>
                   </Select>
                 </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="treatment">Treatment of interest</Label>
+                  <Input
+                    id="treatment"
+                    name="treatment"
+                    value={treatmentName}
+                    onChange={(event) => setTreatmentName(event.target.value)}
+                    maxLength={120}
+                    placeholder="Optional specific treatment"
+                  />
+                </div>
                 <div className="grid sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <Label htmlFor="date">Preferred date</Label>
@@ -103,7 +167,7 @@ export function BookingProvider({ children }: { children: ReactNode }) {
               <CheckCircle2 className="mx-auto h-12 w-12 text-gold" />
               <h3 className="font-serif text-2xl">Thank you.</h3>
               <p className="text-muted-foreground">
-                Your consultation request has been received. A member of our concierge team will reach out within one business day to begin designing your bespoke roadmap.
+                Your consultation request has been received. A team member from our {submittedLocationName} clinic will reach out within one business day to begin designing your bespoke roadmap.
               </p>
               <Button variant="outline" onClick={() => setIsOpen(false)}>Close</Button>
             </div>
